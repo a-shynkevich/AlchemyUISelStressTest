@@ -1,7 +1,9 @@
 package bn.nook.alchemy.screen;
 
 import bn.nook.alchemy.utils.TestManager;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import io.selendroid.SelendroidKeys;
+import junit.framework.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,7 +22,9 @@ public class Oobe extends ScreenHelper {
     }
 
     public static class Constant{
+
         public static class Id{
+
             public static final String SIGN_IN_BUTTN = "sign_in";
             public static final String EMAIL_FIELD = "account";
             public static final String PSSWD_FIELD = "password";
@@ -29,19 +33,30 @@ public class Oobe extends ScreenHelper {
             public static final String EXPLORE_APP_BUTN = "start_reading";
             public static final String VIEW_PAGER = "pager";
             public static final String COUNTRY_SPINNER = "cor_spinner";
+            public static final String BACK_BTN = "back";
+            public static final String CLOSE_BTN = "close";
         }
+
         public  static class Account{
-            public static final String EMAIL_ADDRESS = TestManager.getInstance().getLogin();
-            public static final String PASSWORD = TestManager.getInstance().getPassword();
+            public static final String EMAIL_ADDRESS = "avatar_unified_small2@books.com";
+            public static final String PASSWORD = "access";
         }
+
         public static class ScreenId {
             public static final int UNKNOWN_SCREEN = -1;
             public static final int MAIN_SCREEN = 0;
             public static final int MAIN_WITH_COUNTRY_LIST = 1;
+            public static final int LOGIN_SCREEN = 2;
+            public static final int POPUP_VALIDATION_ERRORS =3;
+
         }
+
         public static class Text{
             public static final String UNITED_STATES = "United States";
             public static final String UNITED_KINGDOM = "United Kingdom";
+            public static final String WRONG_EMAIL = "-Your Email Address field must contain a valid email address.";
+            public static final String EMPTY_EMAIL_FIELD = "Please enter your email address in order to sign in to your account.";
+            public static final String TRY_AGAIN_BUTTON = "Try again";
         }
     }
 
@@ -49,6 +64,8 @@ public class Oobe extends ScreenHelper {
 
     private ActionOnMainScreen actionOnMainScreen = new ActionOnMainScreen();
     private ActionOnMainWithCountryList actionOnMainWithCountryList = new ActionOnMainWithCountryList();
+    private ActionOnLoginScreen actionOnLoginScreen = new ActionOnLoginScreen();
+    private ActionOnLoginPopupErrorScreen actionPopupErrorScreen = new ActionOnLoginPopupErrorScreen();
 
     public void start(){
         switch (detectedScreen()){
@@ -60,6 +77,14 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("Oobe screen is main screen with country list.");
                 randomActionMainCountryList();
                 break;
+            case Constant.ScreenId.LOGIN_SCREEN:
+                TestManager.log("Oobe screen is Log in screen");
+                randomActionLoginScreen();
+                break;
+            case Constant.ScreenId.POPUP_VALIDATION_ERRORS:
+                TestManager.log("Oobe screen is Login screen : \"Validation errors\" popup.)");
+                actionPopupErrorScreen.closePopup();
+                break;
         }
     }
 
@@ -68,7 +93,8 @@ public class Oobe extends ScreenHelper {
     }
 
     public boolean isVisible() {
-        if(isExistMainScreen() || isExistMainScreenWithCountryList())
+        if(isExistMainScreen() || isExistLoginScreen() || isExistMainScreenWithCountryList() ||
+                isExistPopupValidationErrors())
             return true;
         return false;
     }
@@ -82,7 +108,6 @@ public class Oobe extends ScreenHelper {
             currentScreenId = Constant.ScreenId.MAIN_SCREEN;
             return true;
         }
-        TestManager.log("Main Screen was not detected");
         return false;
     }
 
@@ -94,7 +119,28 @@ public class Oobe extends ScreenHelper {
             currentScreenId = Constant.ScreenId.MAIN_WITH_COUNTRY_LIST;
             return true;
         }
-        TestManager.log("Main Screen (Country list) was not detected");
+        return false;
+    }
+
+    private boolean isExistLoginScreen(){
+        By idEmailField = By.id(Constant.Id.EMAIL_FIELD);
+
+        if(isElementPresent(idEmailField)){
+            currentScreenId = Constant.ScreenId.LOGIN_SCREEN;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isExistPopupValidationErrors(){
+        By textAlertMessage = By.linkText(Constant.Text.WRONG_EMAIL);
+        By textEmptyEmailField = By.linkText(Constant.Text.EMPTY_EMAIL_FIELD);
+
+
+        if (isElementPresent(textAlertMessage) || isElementPresent(textEmptyEmailField)){
+            currentScreenId = Constant.ScreenId.POPUP_VALIDATION_ERRORS;
+            return true;
+        }
         return false;
     }
 
@@ -163,17 +209,67 @@ public class Oobe extends ScreenHelper {
         }
     }
 
+    private class ActionOnLoginScreen{
+
+        private void enterEmail(){
+            By idEmail = By.id(Constant.Id.EMAIL_FIELD);
+            WebElement email = waitForElement(idEmail, driver, 60);
+            if (email == null){
+                TestManager.log("Email field was not found");
+            }else {
+                email.clear();
+                email.sendKeys(Constant.Account.EMAIL_ADDRESS);
+            }
+        }
+
+        private void clickBackButton(){
+            By idBackBtn = By.id(Constant.Id.BACK_BTN);
+            WebElement back = waitForElement(idBackBtn, driver, 60);
+            if (back == null){
+                TestManager.log("Back button was not found");
+            }else back.click();
+        }
+
+        private void cliclCloseButton(){
+            By idCloseBtn = By.id(Constant.Id.CLOSE_BTN);
+            WebElement close = waitForElement(idCloseBtn, driver, 60);
+            if (close == null){
+                TestManager.log("Close button was not found");
+            }else close.click();
+        }
+
+        private void clickNextButton(){
+            By idNextBtn = By.id(Constant.Id.NEXT_BTN);
+            WebElement nextBtn = waitForElement(idNextBtn, driver, 60);
+            if (nextBtn == null){
+                TestManager.log("Next button was not found");
+            }else nextBtn.click();
+        }
+    }
+
+    private class ActionOnLoginPopupErrorScreen{
+
+        private void closePopup(){
+            By textTryAgainBtn = By.linkText(Constant.Text.TRY_AGAIN_BUTTON);
+            WebElement tryAgainBtn = waitForElement(textTryAgainBtn, driver, 60);
+            if(tryAgainBtn == null){
+                TestManager.log("\"Try again\" button was not found");
+            }else tryAgainBtn.click();
+        }
+    }
+
 
     public void randomActionMainScreen(){
 
         switch (setRandomNumber(4)){
             case 0: {
-//                actionOnMainScreen.signIn();
+                actionOnMainScreen.signIn();
                 TestManager.log("SIGN IN click");
                 break;
             }
             case 1:
                 actionOnMainScreen.swipeImages();
+                TestManager.log("SWIPE");
                 break;
             case 2:
 //                actionOnMainScreen.tapOnExplroeAppBtn();
@@ -181,6 +277,7 @@ public class Oobe extends ScreenHelper {
                 break;
             case 3:
                 actionOnMainScreen.clickOnCountrySpinner();
+                TestManager.log("CLICK ON COUNTRY SPINNER");
                 break;
         }
     }
@@ -192,6 +289,27 @@ public class Oobe extends ScreenHelper {
                 break;
             case 1:
                 actionOnMainWithCountryList.chooseUSA();
+                break;
+        }
+    }
+
+    public void randomActionLoginScreen(){
+        switch (setRandomNumber(4)){
+            case 0:
+                actionOnLoginScreen.clickBackButton();
+                TestManager.log("CLICK BACK BUTTON");
+                break;
+            case 1:
+                actionOnLoginScreen.cliclCloseButton();
+                TestManager.log("CLICK CLOSE BUTTON");
+                break;
+            case 2:
+                actionOnLoginScreen.enterEmail();
+                TestManager.log("ENTER EMAIL");
+                break;
+            case 3:
+                actionOnLoginScreen.clickNextButton();
+                TestManager.log("CLICK NEXT BUTTON");
                 break;
         }
     }

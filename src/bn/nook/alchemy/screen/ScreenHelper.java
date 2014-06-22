@@ -30,7 +30,7 @@ public class ScreenHelper implements IScreenHelper {
 
     public ScreenHelper(WebDriver driver){
         this.driver = driver;
-        testHelper = TestManager.getInstance().getTestHelper();
+//        testHelper = TestManager.getInstance().getTestHelper();
     }
 
     protected WebElement waitForElement(final By by,  WebDriver driver, long timeoutInSec) {
@@ -107,7 +107,7 @@ public class ScreenHelper implements IScreenHelper {
         WebElement webElement = null;
         WebElement parent = driver.findElement(parentBy);
         List<WebElement> list = parent.findElements(childBy);
-        for(int i =0; i < list.size(); i++){
+        for(int i = 0; i < list.size(); i++){
             webElement = list.get(i);
             TestManager.log(webElement.getText());
         }

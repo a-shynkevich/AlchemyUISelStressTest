@@ -16,8 +16,8 @@ public class TestRunner {
     public static void runTest() throws InterruptedException {
         int countUnknownScreen = 0;
         ScreenDefinition screenDefinition = new ScreenDefinition(TestManager.driver);
+//        sleep(600000);
         while(true){
-            sleep(2000);
             switch (screenDefinition.detectedScreen()){
                 case Constant.EnumScreen.OOBE_SCREEN:
                     TestManager.log("OOBE_SCREEN");
