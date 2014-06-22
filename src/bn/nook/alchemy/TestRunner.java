@@ -4,6 +4,8 @@ import bn.nook.alchemy.screen.Oobe;
 import bn.nook.alchemy.utils.Constant;
 import bn.nook.alchemy.utils.ScreenDefinition;
 import bn.nook.alchemy.utils.TestManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import static java.lang.Thread.sleep;
 
@@ -17,6 +19,7 @@ public class TestRunner {
         int countUnknownScreen = 0;
         ScreenDefinition screenDefinition = new ScreenDefinition(TestManager.driver);
 //        sleep(600000);
+
         while(true){
             switch (screenDefinition.detectedScreen()){
                 case Constant.EnumScreen.OOBE_SCREEN:

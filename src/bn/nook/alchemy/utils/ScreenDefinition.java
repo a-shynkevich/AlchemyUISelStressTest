@@ -22,7 +22,7 @@ public class ScreenDefinition {
     }
     private boolean oobeDetected() {
         Oobe oobe = new Oobe(driver);
-        TestManager.log("Start oobe detected");
+        TestManager.log("Start oobe detected\n");
         return oobe.isVisible();
     }
 }

@@ -1,9 +1,7 @@
 package bn.nook.alchemy.screen;
 
 import bn.nook.alchemy.utils.TestManager;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import io.selendroid.SelendroidKeys;
-import junit.framework.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,6 +33,7 @@ public class Oobe extends ScreenHelper {
             public static final String COUNTRY_SPINNER = "cor_spinner";
             public static final String BACK_BTN = "back";
             public static final String CLOSE_BTN = "close";
+            public static final String SHOW_PSSW_CHECK_BOX = "show_password";
         }
 
         public  static class Account{
@@ -47,16 +46,20 @@ public class Oobe extends ScreenHelper {
             public static final int MAIN_SCREEN = 0;
             public static final int MAIN_WITH_COUNTRY_LIST = 1;
             public static final int LOGIN_SCREEN = 2;
-            public static final int POPUP_VALIDATION_ERRORS =3;
+            public static final int POPUP_VALIDATION_ERRORS = 3;
+            public static final int PASSWORD_SCREEN = 4;
+            public static final int DIALOG_NO_INTERNET = 5;
+            public static final int SELECT_COUNTRY_ERROR_DIALOG = 6;
 
         }
 
         public static class Text{
             public static final String UNITED_STATES = "United States";
             public static final String UNITED_KINGDOM = "United Kingdom";
-            public static final String WRONG_EMAIL = "-Your Email Address field must contain a valid email address.";
-            public static final String EMPTY_EMAIL_FIELD = "Please enter your email address in order to sign in to your account.";
             public static final String TRY_AGAIN_BUTTON = "Try again";
+            public static final String NO_INTERNET_TITLE = "Let's get connected";
+            public static final String OK_BUTTON = "OK";
+            public static final String SELECT_COUNTRY_TEXT = "Please select your country in order to proceed.";
         }
     }
 
@@ -65,9 +68,11 @@ public class Oobe extends ScreenHelper {
     private ActionOnMainScreen actionOnMainScreen = new ActionOnMainScreen();
     private ActionOnMainWithCountryList actionOnMainWithCountryList = new ActionOnMainWithCountryList();
     private ActionOnLoginScreen actionOnLoginScreen = new ActionOnLoginScreen();
-    private ActionOnLoginPopupErrorScreen actionPopupErrorScreen = new ActionOnLoginPopupErrorScreen();
+    private DialogScreen dialog = new DialogScreen();
+    private ActionOnPasswordScreen actionPasswScreen = new ActionOnPasswordScreen();
 
     public void start(){
+
         switch (detectedScreen()){
             case Constant.ScreenId.MAIN_SCREEN:
                 TestManager.log("Oobe screen is main screen.");
@@ -83,7 +88,19 @@ public class Oobe extends ScreenHelper {
                 break;
             case Constant.ScreenId.POPUP_VALIDATION_ERRORS:
                 TestManager.log("Oobe screen is Login screen : \"Validation errors\" popup.)");
-                actionPopupErrorScreen.closePopup();
+                dialog.closeTryAgainDialog();
+                break;
+            case Constant.ScreenId.PASSWORD_SCREEN:
+                TestManager.log("Oobe screen is Password screen.");
+                randomActionPasswordField();
+                break;
+            case Constant.ScreenId.DIALOG_NO_INTERNET:
+                TestManager.log("Oobe screen is Dialog no Internet.");
+                dialog.clickOkBtn();
+                break;
+            case Constant.ScreenId.SELECT_COUNTRY_ERROR_DIALOG:
+                TestManager.log("Oobe screen is Select Country Error Dialog.");
+                dialog.clickOkBtn();
                 break;
         }
     }
@@ -94,17 +111,16 @@ public class Oobe extends ScreenHelper {
 
     public boolean isVisible() {
         if(isExistMainScreen() || isExistLoginScreen() || isExistMainScreenWithCountryList() ||
-                isExistPopupValidationErrors())
+                isExistPasswordScreen() || isExistPopupValidationErrors() || isExistDialogNoInternet() ||
+                isExistSelectCountryDialog())
             return true;
         return false;
     }
 
     private boolean isExistMainScreen(){
-        By logInBtn = By.id(Constant.Id.SIGN_IN_BUTTN);
         By exploreAppBtn = By.id(Constant.Id.EXPLORE_APP_BUTN);
-        By mainImage = By.id(Constant.Id.VIEW_PAGER);
 
-        if(isElementPresent(logInBtn) && isElementPresent(exploreAppBtn) && isElementPresent(mainImage)){
+        if(isElementPresent(exploreAppBtn)){
             currentScreenId = Constant.ScreenId.MAIN_SCREEN;
             return true;
         }
@@ -133,12 +149,38 @@ public class Oobe extends ScreenHelper {
     }
 
     private boolean isExistPopupValidationErrors(){
-        By textAlertMessage = By.linkText(Constant.Text.WRONG_EMAIL);
-        By textEmptyEmailField = By.linkText(Constant.Text.EMPTY_EMAIL_FIELD);
+        By textTryAgainBtn = By.linkText(Constant.Text.TRY_AGAIN_BUTTON);
 
-
-        if (isElementPresent(textAlertMessage) || isElementPresent(textEmptyEmailField)){
+        if (isElementPresent(textTryAgainBtn)){
             currentScreenId = Constant.ScreenId.POPUP_VALIDATION_ERRORS;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isExistPasswordScreen(){
+        By idPasswordField = By.id(Constant.Id.PSSWD_FIELD);
+
+        if (isElementPresent(idPasswordField)){
+            currentScreenId = Constant.ScreenId.PASSWORD_SCREEN;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isExistDialogNoInternet(){
+        By textNoInternet = By.linkText(Constant.Text.NO_INTERNET_TITLE);
+        if (isElementPresent(textNoInternet)){
+            currentScreenId = Constant.ScreenId.DIALOG_NO_INTERNET;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isExistSelectCountryDialog(){
+        By textSelectCountry = By.linkText(Constant.Text.SELECT_COUNTRY_TEXT);
+        if (isElementPresent(textSelectCountry)){
+            currentScreenId = Constant.ScreenId.SELECT_COUNTRY_ERROR_DIALOG;
             return true;
         }
         return false;
@@ -153,6 +195,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"LOG IN\" button was not found!");
             }else {
                 signBtn.click();
+                TestManager.log("SIGN IN click");
             }
         }
         private void swipeImages(){
@@ -162,6 +205,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"Pager\" element was not found!");
             }else {
                 swipe(pager, ((int) (Math.random() * 2) - 1));
+                TestManager.log("SWIPE");
             }
         }
         private void tapOnExplroeAppBtn(){
@@ -171,6 +215,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"Explore the app\" button was not found!");
             }else {
                 exploreAppBtn.click();
+                TestManager.log("Click on EXPLORE BUTTON");
             }
         }
         public void clickOnCountrySpinner(){
@@ -180,6 +225,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"Country Spinner\" was not found!");
             }else {
                 countrySpinner.click();
+                TestManager.log("CLICK ON COUNTRY SPINNER");
             }
         }
     }
@@ -195,6 +241,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"United States\" was not found");
             } else {
                 USA.click();
+                TestManager.log("CLICK UNITED STATES");
             }
         }
 
@@ -205,6 +252,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"United Kingdom\" was not found");
             }else {
                 UK.click();
+                TestManager.log("CLICK UNITED KINGDOM");
             }
         }
     }
@@ -219,6 +267,7 @@ public class Oobe extends ScreenHelper {
             }else {
                 email.clear();
                 email.sendKeys(Constant.Account.EMAIL_ADDRESS);
+                TestManager.log("ENTER EMAIL");
             }
         }
 
@@ -227,7 +276,10 @@ public class Oobe extends ScreenHelper {
             WebElement back = waitForElement(idBackBtn, driver, 60);
             if (back == null){
                 TestManager.log("Back button was not found");
-            }else back.click();
+            }else {
+                back.click();
+                TestManager.log("CLICK BACK BUTTON");
+            }
         }
 
         private void cliclCloseButton(){
@@ -235,7 +287,10 @@ public class Oobe extends ScreenHelper {
             WebElement close = waitForElement(idCloseBtn, driver, 60);
             if (close == null){
                 TestManager.log("Close button was not found");
-            }else close.click();
+            }else{
+                close.click();
+                TestManager.log("CLICK CLOSE BUTTON");
+            }
         }
 
         private void clickNextButton(){
@@ -243,33 +298,70 @@ public class Oobe extends ScreenHelper {
             WebElement nextBtn = waitForElement(idNextBtn, driver, 60);
             if (nextBtn == null){
                 TestManager.log("Next button was not found");
-            }else nextBtn.click();
+            }else{
+                nextBtn.click();
+                TestManager.log("CLICK NEXT BUTTON");
+            }
         }
     }
 
-    private class ActionOnLoginPopupErrorScreen{
+    private class DialogScreen {
 
-        private void closePopup(){
+        private void closeTryAgainDialog(){
             By textTryAgainBtn = By.linkText(Constant.Text.TRY_AGAIN_BUTTON);
             WebElement tryAgainBtn = waitForElement(textTryAgainBtn, driver, 60);
             if(tryAgainBtn == null){
                 TestManager.log("\"Try again\" button was not found");
-            }else tryAgainBtn.click();
+            }else {
+                tryAgainBtn.click();
+                TestManager.log("Click TRY AGAIN button");
+            }
+        }
+
+        private void clickOkBtn(){
+           By textOkBtn = By.linkText(Constant.Text.OK_BUTTON);
+            WebElement okBtn = waitForElement(textOkBtn, driver, 60);
+            if (okBtn == null){
+                TestManager.log("\"OK\" button was not found");
+            }else okBtn.click();
         }
     }
 
+    private class ActionOnPasswordScreen{
+
+        private void enterPassword(){
+            By idPassword = By.id(Constant.Id.PSSWD_FIELD);
+            WebElement passwordField = waitForElement(idPassword, driver, 60);
+            if(passwordField == null){
+                TestManager.log("\"Password\" field was not found.");
+            }else {
+                passwordField.clear();
+                passwordField.sendKeys(Constant.Account.PASSWORD);
+                TestManager.log("ENTER PASSWORD");
+            }
+        }
+
+        private void showPassword(){
+            By idCheckBox = By.id(Constant.Id.SHOW_PSSW_CHECK_BOX);
+            WebElement checkBox = waitForElement(idCheckBox, driver, 60);
+            if (checkBox == null){
+                TestManager.log("\"Show password\" checkbox was not found");
+            }else{
+                checkBox.click();
+                TestManager.log("CLICK ON \"SHOW PASSWORD\" CHECK BOX.");
+            }
+        }
+    }
 
     public void randomActionMainScreen(){
 
         switch (setRandomNumber(4)){
             case 0: {
                 actionOnMainScreen.signIn();
-                TestManager.log("SIGN IN click");
                 break;
             }
             case 1:
                 actionOnMainScreen.swipeImages();
-                TestManager.log("SWIPE");
                 break;
             case 2:
 //                actionOnMainScreen.tapOnExplroeAppBtn();
@@ -277,7 +369,6 @@ public class Oobe extends ScreenHelper {
                 break;
             case 3:
                 actionOnMainScreen.clickOnCountrySpinner();
-                TestManager.log("CLICK ON COUNTRY SPINNER");
                 break;
         }
     }
@@ -297,19 +388,36 @@ public class Oobe extends ScreenHelper {
         switch (setRandomNumber(4)){
             case 0:
                 actionOnLoginScreen.clickBackButton();
-                TestManager.log("CLICK BACK BUTTON");
+
                 break;
             case 1:
                 actionOnLoginScreen.cliclCloseButton();
-                TestManager.log("CLICK CLOSE BUTTON");
                 break;
             case 2:
                 actionOnLoginScreen.enterEmail();
-                TestManager.log("ENTER EMAIL");
                 break;
             case 3:
                 actionOnLoginScreen.clickNextButton();
-                TestManager.log("CLICK NEXT BUTTON");
+                break;
+        }
+    }
+
+    public void randomActionPasswordField(){
+        switch (setRandomNumber(5)){
+            case 0:
+                actionPasswScreen.enterPassword();
+                break;
+            case 1:
+                actionOnLoginScreen.clickBackButton(); //the same element as on the Login screen
+                break;
+            case 2:
+                actionOnLoginScreen.cliclCloseButton(); //the same element as on the Login screen
+                break;
+            case 3:
+//                actionOnLoginScreen.clickNextButton(); //the same element as on the Login screen
+                break;
+            case 4:
+                actionPasswScreen.showPassword();
                 break;
         }
     }
