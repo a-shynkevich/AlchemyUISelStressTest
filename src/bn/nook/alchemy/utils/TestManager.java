@@ -1,5 +1,9 @@
 package bn.nook.alchemy.utils;
 
+import io.selendroid.SelendroidCapabilities;
+import io.selendroid.SelendroidConfiguration;
+import io.selendroid.SelendroidDriver;
+import io.selendroid.SelendroidLauncher;
 import net.bugs.testhelper.TestHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +24,38 @@ public class TestManager {
     private static String mPassword = null;
     private static String mPathToAPK = null;
     private static net.bugs.testhelper.helpers.PropertiesManager mPropertiesManager;
+
+//    private static String pathToApp = TestManager.getInstance().getPathToAPK();
+//    private static SelendroidLauncher selendroidServer;
+    private static String appID = "bn.ereader:4.0.0.158";
+    public static WebDriver driver = null;
+
+    public static void startServer(){
+//        if (selendroidServer != null){
+//            selendroidServer.stopSelendroid();
+//        }
+//
+//        SelendroidConfiguration config = new SelendroidConfiguration();
+//        config.addSupportedApp(pathToApp);
+//        selendroidServer = new SelendroidLauncher(config);
+//        selendroidServer.launchSelendroid();
+
+        SelendroidCapabilities cap = new SelendroidCapabilities(appID);
+        try {
+            driver = new SelendroidDriver(cap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//    public static void stopServer(){
+//        if(driver != null){
+//            driver.quit();
+//        }
+//        if(selendroidServer != null){
+//            selendroidServer.stopSelendroid();
+//        }
+//    }
 
     public static void log(String message){
         System.out.println(message);

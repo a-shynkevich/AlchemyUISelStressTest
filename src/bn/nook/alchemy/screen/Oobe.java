@@ -102,35 +102,38 @@ public class Oobe extends ScreenHelper {
 
         private void signIn(){
             By idSignBtn = By.id(Constant.Id.SIGN_IN_BUTTN);
-            if (!waitForElement(idSignBtn, driver, 60)){
+            WebElement signBtn =waitForElement(idSignBtn, driver, 60);
+            if (signBtn == null){
                 TestManager.log("\"LOG IN\" button was not found!");
             }else {
-                clickById(idSignBtn);
+                signBtn.click();
             }
         }
         private void swipeImages(){
-            By pager = By.id(Constant.Id.VIEW_PAGER);
-            if(!waitForElement(pager, driver, 60)){
+            By idPager = By.id(Constant.Id.VIEW_PAGER);
+            WebElement pager = waitForElement(idPager, driver, 60);
+            if(pager == null){
                 TestManager.log("\"Pager\" element was not found!");
             }else {
-                WebElement pagerElement = findElement(By.id(Constant.Id.VIEW_PAGER));
-                swipe(pagerElement, ((int) (Math.random() * 2) - 1));
+                swipe(pager, ((int) (Math.random() * 2) - 1));
             }
         }
         private void tapOnExplroeAppBtn(){
             By idExploreAppBtn = By.id(Constant.Id.EXPLORE_APP_BUTN);
-            if(!waitForElement(idExploreAppBtn, driver , 60)){
+            WebElement exploreAppBtn = waitForElement(idExploreAppBtn, driver , 60);
+            if(exploreAppBtn == null){
                 TestManager.log("\"Explore the app\" button was not found!");
             }else {
-                clickById(idExploreAppBtn);
+                exploreAppBtn.click();
             }
         }
         public void clickOnCountrySpinner(){
             By idCountrySpinner = By.id(Constant.Id.COUNTRY_SPINNER);
-            if(!waitForElement(idCountrySpinner, driver, 60)){
+            WebElement countrySpinner = waitForElement(idCountrySpinner, driver, 60);
+            if(countrySpinner == null){
                 TestManager.log("\"Country Spinner\" was not found!");
             }else {
-                clickById(idCountrySpinner);
+                countrySpinner.click();
             }
         }
     }
@@ -141,19 +144,21 @@ public class Oobe extends ScreenHelper {
 
         private void chooseUSA() {
             By textUSA = By.linkText(Constant.Text.UNITED_STATES);
-            if (!waitForElement(textUSA, driver, 60)) {
+            WebElement USA = waitForElement(textUSA, driver, 60);
+            if (USA == null) {
                 TestManager.log("\"United States\" was not found");
             } else {
-                clickByText(textUSA);
+                USA.click();
             }
         }
 
         private void chooseUK(){
             By textUK = By.linkText(Constant.Text.UNITED_KINGDOM);
-            if(!waitForElement(textUK, driver , 60)){
+            WebElement UK = waitForElement(textUK, driver , 60);
+            if(UK == null){
                 TestManager.log("\"United Kingdom\" was not found");
             }else {
-                clickByText(textUK);
+                UK.click();
             }
         }
     }

@@ -33,17 +33,17 @@ public class ScreenHelper implements IScreenHelper {
         testHelper = TestManager.getInstance().getTestHelper();
     }
 
-    protected boolean waitForElement(final By by,  WebDriver driver, long timeoutInSec) {
+    protected WebElement waitForElement(final By by,  WebDriver driver, long timeoutInSec) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSec);
         try {
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
             if (element.isDisplayed()) {
-                return true;
+                return element;
             }
         } catch (Exception e) {
-            return false;
+            return null;
         }
-        return false;
+        return null;
     }
     protected boolean isElementPresent(By by){
         try {
