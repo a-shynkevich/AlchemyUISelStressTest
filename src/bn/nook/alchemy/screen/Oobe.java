@@ -170,7 +170,7 @@ public class Oobe extends ScreenHelper {
 
     private boolean isExistDialogNoInternet(){
 
-        if (testHelper.getViewById(Constant.Text.NO_INTERNET_TITLE, true, false).exists()){
+        if (testHelper.getViewByText(Constant.Text.NO_INTERNET_TITLE, true, false).exists()){
             currentScreenId = Constant.ScreenId.DIALOG_NO_INTERNET;
             return true;
         }else return false;
