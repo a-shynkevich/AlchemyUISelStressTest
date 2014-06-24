@@ -23,6 +23,7 @@ public class Oobe extends ScreenHelper {
 
         public static class Id{
 
+            public static final String PACKAGE_PATH_FOR_TH_ID = "bn.ereader:id/";
             public static final String SIGN_IN_BUTTN = "sign_in";
             public static final String EMAIL_FIELD = "account";
             public static final String PSSWD_FIELD = "password";
@@ -60,6 +61,7 @@ public class Oobe extends ScreenHelper {
             public static final String NO_INTERNET_TITLE = "Let's get connected";
             public static final String OK_BUTTON = "OK";
             public static final String SELECT_COUNTRY_TEXT = "Please select your country in order to proceed.";
+            public static final String USE_SOCIAL_ACC = "Use a social account";
         }
     }
 
@@ -118,72 +120,68 @@ public class Oobe extends ScreenHelper {
     }
 
     private boolean isExistMainScreen(){
-        By exploreAppBtn = By.id(Constant.Id.EXPLORE_APP_BUTN);
-
-        if(isElementPresent(exploreAppBtn)){
+//        By exploreAppBtn = By.id(Constant.Id.EXPLORE_APP_BUTN);
+//
+//        if(isElementPresent(exploreAppBtn)){
+//            currentScreenId = Constant.ScreenId.MAIN_SCREEN;
+//            return true;
+//        }
+//        return false;
+        if (testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_TH_ID + Constant.Id.EXPLORE_APP_BUTN, true, false).exists()){
             currentScreenId = Constant.ScreenId.MAIN_SCREEN;
             return true;
-        }
-        return false;
+        }else return false;
     }
 
     private boolean isExistMainScreenWithCountryList(){
-        By unitedStates = By.linkText(Constant.Text.UNITED_STATES);
-        By unitedKingdom = By.linkText(Constant.Text.UNITED_KINGDOM);
-
-        if(isElementPresent(unitedStates) && isElementPresent(unitedKingdom)){
+        if (testHelper.getViewByText(Constant.Text.UNITED_STATES, true, false).exists()){
             currentScreenId = Constant.ScreenId.MAIN_WITH_COUNTRY_LIST;
             return true;
-        }
-        return false;
+        }else return false;
+
     }
 
     private boolean isExistLoginScreen(){
-        By idEmailField = By.id(Constant.Id.EMAIL_FIELD);
 
-        if(isElementPresent(idEmailField)){
+        if ((testHelper.getViewById( Constant.Id.PACKAGE_PATH_FOR_TH_ID +Constant.Id.EMAIL_FIELD, true, false).exists()
+                && !testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_TH_ID +Constant.Id.PSSWD_FIELD, true, false).exists())
+                ||testHelper.getViewByText(Constant.Text.USE_SOCIAL_ACC, true, false).exists()){
             currentScreenId = Constant.ScreenId.LOGIN_SCREEN;
             return true;
-        }
-        return false;
+        }else return false;
     }
 
     private boolean isExistPopupValidationErrors(){
-        By textTryAgainBtn = By.linkText(Constant.Text.TRY_AGAIN_BUTTON);
 
-        if (isElementPresent(textTryAgainBtn)){
+        if (testHelper.getViewByText(Constant.Text.TRY_AGAIN_BUTTON, true, false).exists()){
             currentScreenId = Constant.ScreenId.POPUP_VALIDATION_ERRORS;
             return true;
-        }
-        return false;
+        }else return false;
     }
 
     private boolean isExistPasswordScreen(){
-        By idPasswordField = By.id(Constant.Id.PSSWD_FIELD);
 
-        if (isElementPresent(idPasswordField)){
+        if (testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_TH_ID +Constant.Id.PSSWD_FIELD, true, false).exists()){
             currentScreenId = Constant.ScreenId.PASSWORD_SCREEN;
             return true;
-        }
-        return false;
+        }else return false;
+
     }
 
     private boolean isExistDialogNoInternet(){
-        By textNoInternet = By.linkText(Constant.Text.NO_INTERNET_TITLE);
-        if (isElementPresent(textNoInternet)){
+
+        if (testHelper.getViewById(Constant.Text.NO_INTERNET_TITLE, true, false).exists()){
             currentScreenId = Constant.ScreenId.DIALOG_NO_INTERNET;
             return true;
-        }
-        return false;
+        }else return false;
     }
 
     private boolean isExistSelectCountryDialog(){
-        By textSelectCountry = By.linkText(Constant.Text.SELECT_COUNTRY_TEXT);
-        if (isElementPresent(textSelectCountry)){
+
+        if (testHelper.getViewById(Constant.Text.SELECT_COUNTRY_TEXT, true, false).exists()){
             currentScreenId = Constant.ScreenId.SELECT_COUNTRY_ERROR_DIALOG;
             return true;
-        }
-        return false;
+        }else return false;
     }
 
     private class ActionOnMainScreen{
@@ -319,7 +317,7 @@ public class Oobe extends ScreenHelper {
         }
 
         private void clickOkBtn(){
-           By textOkBtn = By.linkText(Constant.Text.OK_BUTTON);
+            By textOkBtn = By.linkText(Constant.Text.OK_BUTTON);
             WebElement okBtn = waitForElement(textOkBtn, driver, 60);
             if (okBtn == null){
                 TestManager.log("\"OK\" button was not found");
@@ -349,6 +347,17 @@ public class Oobe extends ScreenHelper {
             }else{
                 checkBox.click();
                 TestManager.log("CLICK ON \"SHOW PASSWORD\" CHECK BOX.");
+            }
+        }
+
+        private void clickSignUpBtn(){
+            By idSignUpBtn = By.id(Constant.Id.SIGN_UP_BUTTN);
+            WebElement signUpBtn = waitForElement(idSignUpBtn, driver, 60);
+            if (signUpBtn == null){
+                TestManager.log("\"Sign up\" button was not found");
+            }else{
+                signUpBtn.click();
+                TestManager.log("CLICK ON \"SIGN UP\" BUTTON.");
             }
         }
     }
@@ -414,7 +423,7 @@ public class Oobe extends ScreenHelper {
                 actionOnLoginScreen.cliclCloseButton(); //the same element as on the Login screen
                 break;
             case 3:
-//                actionOnLoginScreen.clickNextButton(); //the same element as on the Login screen
+//                actionPasswScreen.clickSignUpBtn(); //the same element as on the Login screen
                 break;
             case 4:
                 actionPasswScreen.showPassword();
@@ -466,7 +475,6 @@ public class Oobe extends ScreenHelper {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
 }

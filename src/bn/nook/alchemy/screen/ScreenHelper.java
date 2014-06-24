@@ -3,15 +3,11 @@ package bn.nook.alchemy.screen;
 import bn.nook.alchemy.utils.TestManager;
 import net.bugs.testhelper.TestHelper;
 import org.openqa.selenium.*;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.touch.TouchActions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 
-import java.awt.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
 
@@ -30,7 +26,7 @@ public class ScreenHelper implements IScreenHelper {
 
     public ScreenHelper(WebDriver driver){
         this.driver = driver;
-//        testHelper = TestManager.getInstance().getTestHelper();
+        testHelper = TestManager.getInstance().getTestHelper();
     }
 
     protected WebElement waitForElement(final By by,  WebDriver driver, long timeoutInSec) {
@@ -45,7 +41,7 @@ public class ScreenHelper implements IScreenHelper {
         }
         return null;
     }
-    protected boolean isElementPresent(By by){
+    protected boolean isWebElementPresent(By by){
         try {
             WebElement element = driver.findElement(by);
             if(element.isDisplayed()) {
@@ -55,40 +51,6 @@ public class ScreenHelper implements IScreenHelper {
             return false;
         }
         return false;
-    }
-
-//    protected boolean waitForElement(final By by, WebDriver driver, long timeout){
-//        WebDriverWait waiter = new WebDriverWait(driver,timeout);
-//        waiter.until(new ExpectedCondition<Boolean>(){
-//                         public Boolean apply(WebDriver d){
-//                             return  !d.findElement(by).isDisplayed();
-//                         }
-//                     }
-//        );
-//
-//        return false;
-//    }
-
-    public void scrollListDown(WebDriver driver, By parentBy, By childBy){
-        WebElement lastWebElement;
-        WebElement webElement;
-        List<WebElement> list = driver.findElements(parentBy);
-        lastWebElement = list.get(list.size()-1);
-        new TouchActions(driver).flick(lastWebElement, 0, -800, 2).perform();
-    }
-
-    public WebElement scrollListToElementByText(WebDriver driver, By parentBy, By childBy, String childText){
-        WebElement searchItem = getNativeViewElementByText(driver , parentBy, childBy, childText);
-        while (searchItem == null) {
-            try {
-                scrollListDown(driver, parentBy, childBy);
-                sleep(1500);
-                searchItem = getNativeViewElementByText(driver , parentBy, childBy, childText);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return searchItem;
     }
 
     public WebElement getNativeViewElement(WebDriver driver, By parentBy, By childBy, int indexChild){
@@ -127,8 +89,6 @@ public class ScreenHelper implements IScreenHelper {
         }
         return null;
     }
-
-
 
     public void start(){}
 
@@ -209,7 +169,5 @@ public class ScreenHelper implements IScreenHelper {
             return null;
         }
         return element;
-
     }
-
 }

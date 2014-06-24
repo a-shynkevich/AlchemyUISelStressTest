@@ -35,9 +35,5 @@ public class Library extends ScreenHelper {
             TestManager.log("\"Menu\" button was not found");
         }
         sleep(4000);
-
-        WebElement settingsTab = scrollListToElementByText(driver, By.id(Constant.Id.MENU_LIST_VIEW), By.id(Constant.Id.TEXTVIEW), "Settings");
-        settingsTab.click();
-
     }
 }

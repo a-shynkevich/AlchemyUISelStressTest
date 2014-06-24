@@ -18,15 +18,15 @@ import java.util.Random;
 public class TestManager {
 
     private static TestManager instanceTestManager = null;
-//    private static TestHelper mTestHelper = null;
+    private static TestHelper mTestHelper = null;
     private static String mDeviceId = null;
     private static String mLogin = null;
     private static String mPassword = null;
     private static String mPathToAPK = null;
     private static net.bugs.testhelper.helpers.PropertiesManager mPropertiesManager;
 
-//    private static String pathToApp = TestManager.getInstance().getPathToAPK();
-//    private static SelendroidLauncher selendroidServer;
+    private static String pathToApp = TestManager.getInstance().getPathToAPK();
+    private static SelendroidLauncher selendroidServer;
     private static String appID = "bn.ereader:4.0.0.158";
     public static WebDriver driver = null;
 
@@ -61,34 +61,34 @@ public class TestManager {
         System.out.println(message);
     }
 
-//    private TestManager(String deviceId){
-//        mTestHelper = new TestHelper(deviceId);
-//        mPropertiesManager = mTestHelper.propertiesManager;
-//        readProperties();
-//    }
+    private TestManager(String deviceId){
+        mTestHelper = new TestHelper(deviceId);
+        mPropertiesManager = mTestHelper.propertiesManager;
+        readProperties();
+    }
 
-//    public static TestManager getInstance(final String deviceId){
-//        mDeviceId = deviceId;
-//        if(instanceTestManager == null){
-//            synchronized (TestManager.class){
-//                if(instanceTestManager == null)
-//                    instanceTestManager = new TestManager(mDeviceId);
-//            }
-//        }
-//        return instanceTestManager;
-//    }
+    public static TestManager getInstance(final String deviceId){
+        mDeviceId = deviceId;
+        if(instanceTestManager == null){
+            synchronized (TestManager.class){
+                if(instanceTestManager == null)
+                    instanceTestManager = new TestManager(mDeviceId);
+            }
+        }
+        return instanceTestManager;
+    }
+//
+    public static TestManager getInstance(){
+        return getInstance(mDeviceId);
+    }
+//
+    public void runIntent(String intent){
+        mTestHelper.executeShellCommand(" am start -n " + intent, mTestHelper.defaultCallBack);
+    }
 
-//    public static TestManager getInstance(){
-//        return getInstance(mDeviceId);
-//    }
-
-//    public void runIntent(String intent){
-//        mTestHelper.executeShellCommand(" am start -n " + intent, mTestHelper.defaultCallBack);
-//    }
-
-//    public TestHelper getTestHelper() {
-//        return mTestHelper;
-//    }
+    public TestHelper getTestHelper() {
+        return mTestHelper;
+    }
 
     private void readProperties(){
         PropertiesManager.init();

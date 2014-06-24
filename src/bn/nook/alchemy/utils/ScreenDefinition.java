@@ -1,6 +1,7 @@
 package bn.nook.alchemy.utils;
 
 import bn.nook.alchemy.screen.Oobe;
+import net.bugs.testhelper.TestHelper;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -8,11 +9,13 @@ import org.openqa.selenium.WebDriver;
  */
 public class ScreenDefinition {
     private static WebDriver driver = null;
+    TestHelper th = TestManager.getInstance().getTestHelper();
 
     public ScreenDefinition(WebDriver driver){
         this.driver = driver;
     }
     public int detectedScreen() {
+        th.updateViews();
         if(oobeDetected())
             return Constant.EnumScreen.OOBE_SCREEN;
 //        if(libraryDetected())
