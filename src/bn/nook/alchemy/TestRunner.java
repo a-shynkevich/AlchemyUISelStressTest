@@ -1,6 +1,7 @@
 package bn.nook.alchemy;
 
 import android.webkit.WebViewFragment;
+import bn.nook.alchemy.screen.Dialog;
 import bn.nook.alchemy.screen.Oobe;
 import bn.nook.alchemy.screen.ScreenHelper;
 import bn.nook.alchemy.utils.Constant;
@@ -32,6 +33,12 @@ public class TestRunner {
                     TestManager.log("OOBE_SCREEN");
                     (new Oobe(TestManager.driver)).start();
                     break;
+
+                case Constant.EnumScreen.DIALOG_SCREEN:
+                    TestManager.log("DIALOG_SCREEN");
+                    (new Dialog(TestManager.driver)).start();
+                    break;
+
                 case Constant.EnumScreen.UNKNOWN_SCREEN:
                     TestManager.log("UNKNOWN_SCREEN");
                     countUnknownScreen++;
@@ -47,7 +54,7 @@ public class TestRunner {
     public static void main(String[] args) throws InterruptedException {
         TestManager.startServer();
         runTest();
-//        TestManager.stopServer();
+        TestManager.stopServer();
     }
 
 }

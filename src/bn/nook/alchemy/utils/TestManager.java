@@ -48,14 +48,11 @@ public class TestManager {
         }
     }
 
-//    public static void stopServer(){
-//        if(driver != null){
-//            driver.quit();
-//        }
-//        if(selendroidServer != null){
-//            selendroidServer.stopSelendroid();
-//        }
-//    }
+    public static void stopServer(){
+        if(driver != null){
+            driver.close();
+        }
+    }
 
     public static void log(String message){
         System.out.println(message);

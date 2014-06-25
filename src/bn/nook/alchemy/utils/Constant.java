@@ -16,5 +16,6 @@ public class Constant {
         public static final int UNKNOWN_SCREEN = -1;
         public static final int OOBE_SCREEN = 0;
         public static final int LIBRARY_SCREEN = 1;
+        public static final int DIALOG_SCREEN = 2;
     }
 }

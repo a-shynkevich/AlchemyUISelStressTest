@@ -47,20 +47,12 @@ public class Oobe extends ScreenHelper {
             public static final int MAIN_SCREEN = 0;
             public static final int MAIN_WITH_COUNTRY_LIST = 1;
             public static final int LOGIN_SCREEN = 2;
-            public static final int POPUP_VALIDATION_ERRORS = 3;
-            public static final int PASSWORD_SCREEN = 4;
-            public static final int DIALOG_NO_INTERNET = 5;
-            public static final int SELECT_COUNTRY_ERROR_DIALOG = 6;
-
+            public static final int PASSWORD_SCREEN = 3;
         }
 
         public static class Text{
             public static final String UNITED_STATES = "United States";
             public static final String UNITED_KINGDOM = "United Kingdom";
-            public static final String TRY_AGAIN_BUTTON = "Try again";
-            public static final String NO_INTERNET_TITLE = "Let's get connected";
-            public static final String OK_BUTTON = "OK";
-            public static final String SELECT_COUNTRY_TEXT = "Please select your country in order to proceed.";
             public static final String USE_SOCIAL_ACC = "Use a social account";
         }
     }
@@ -70,7 +62,7 @@ public class Oobe extends ScreenHelper {
     private ActionOnMainScreen actionOnMainScreen = new ActionOnMainScreen();
     private ActionOnMainWithCountryList actionOnMainWithCountryList = new ActionOnMainWithCountryList();
     private ActionOnLoginScreen actionOnLoginScreen = new ActionOnLoginScreen();
-    private DialogScreen dialog = new DialogScreen();
+
     private ActionOnPasswordScreen actionPasswScreen = new ActionOnPasswordScreen();
 
     public void start(){
@@ -88,24 +80,14 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("Oobe screen is Log in screen");
                 randomActionLoginScreen();
                 break;
-            case Constant.ScreenId.POPUP_VALIDATION_ERRORS:
-                TestManager.log("Oobe screen is Login screen : \"Validation errors\" popup.)");
-                dialog.closeTryAgainDialog();
-                break;
+
             case Constant.ScreenId.PASSWORD_SCREEN:
                 TestManager.log("Oobe screen is Password screen.");
                 randomActionPasswordField();
                 break;
-            case Constant.ScreenId.DIALOG_NO_INTERNET:
-                TestManager.log("Oobe screen is Dialog no Internet.");
-                dialog.clickOkBtn();
-                break;
-            case Constant.ScreenId.SELECT_COUNTRY_ERROR_DIALOG:
-                TestManager.log("Oobe screen is Select Country Error Dialog.");
-                dialog.clickOkBtn();
-                break;
         }
     }
+
 
     public int detectedScreen() {
         return currentScreenId;
@@ -113,8 +95,7 @@ public class Oobe extends ScreenHelper {
 
     public boolean isVisible() {
         if(isExistMainScreen() || isExistLoginScreen() || isExistMainScreenWithCountryList() ||
-                isExistPasswordScreen() || isExistPopupValidationErrors() || isExistDialogNoInternet() ||
-                isExistSelectCountryDialog())
+                isExistPasswordScreen())
             return true;
         return false;
     }
@@ -151,13 +132,7 @@ public class Oobe extends ScreenHelper {
         }else return false;
     }
 
-    private boolean isExistPopupValidationErrors(){
 
-        if (testHelper.getViewByText(Constant.Text.TRY_AGAIN_BUTTON, true, false).exists()){
-            currentScreenId = Constant.ScreenId.POPUP_VALIDATION_ERRORS;
-            return true;
-        }else return false;
-    }
 
     private boolean isExistPasswordScreen(){
 
@@ -168,21 +143,7 @@ public class Oobe extends ScreenHelper {
 
     }
 
-    private boolean isExistDialogNoInternet(){
 
-        if (testHelper.getViewByText(Constant.Text.NO_INTERNET_TITLE, true, false).exists()){
-            currentScreenId = Constant.ScreenId.DIALOG_NO_INTERNET;
-            return true;
-        }else return false;
-    }
-
-    private boolean isExistSelectCountryDialog(){
-
-        if (testHelper.getViewById(Constant.Text.SELECT_COUNTRY_TEXT, true, false).exists()){
-            currentScreenId = Constant.ScreenId.SELECT_COUNTRY_ERROR_DIALOG;
-            return true;
-        }else return false;
-    }
 
     private class ActionOnMainScreen{
 
@@ -303,27 +264,7 @@ public class Oobe extends ScreenHelper {
         }
     }
 
-    private class DialogScreen {
 
-        private void closeTryAgainDialog(){
-            By textTryAgainBtn = By.linkText(Constant.Text.TRY_AGAIN_BUTTON);
-            WebElement tryAgainBtn = waitForElement(textTryAgainBtn, driver, 60);
-            if(tryAgainBtn == null){
-                TestManager.log("\"Try again\" button was not found");
-            }else {
-                tryAgainBtn.click();
-                TestManager.log("Click TRY AGAIN button");
-            }
-        }
-
-        private void clickOkBtn(){
-            By textOkBtn = By.linkText(Constant.Text.OK_BUTTON);
-            WebElement okBtn = waitForElement(textOkBtn, driver, 60);
-            if (okBtn == null){
-                TestManager.log("\"OK\" button was not found");
-            }else okBtn.click();
-        }
-    }
 
     private class ActionOnPasswordScreen{
 
