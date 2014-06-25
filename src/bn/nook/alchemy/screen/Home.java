@@ -14,12 +14,25 @@ public class Home extends ScreenHelper {
 
         public static class ScreenId{
             public static final int UNKNOWN_SCREEN = -1;
-            public static final int HOME_SCREEN = 0;
+            public static final int MY_HOME_SCREEN = 0;
+            public static final int DISCOVERY_SCREEN = 1;
+            public static final int TEMPORARY_SCREEN = 2;
+            public static final int QUICK_READS_SCREEN = 3;
+            public static final int LIBRARY_SCREEN = 4;
         }
 
         public static class Id{
             public static final String WELCOME_IMAGE = "fkljgslskdjewr456";
             public static final String VIEW_PAGER = "pager";
+        }
+
+        public static class Text{
+            public static final String HOME = "Home";
+            public static final String DISCOVERY_SCREEN = "Discovery";
+            public static final String CLASS_NAME_TABS_BAR = "android.widget.TextView";
+            public static final String TEMPORARY_SCREEN = "Temporary";
+            public static final String QUICK_READS_SCREEN = "Quick Reads";
+            public static final String LIBRARY_SCREEN = "Library";
         }
     }
 
@@ -29,6 +42,8 @@ public class Home extends ScreenHelper {
 
     ActionHomeScreen actionHomeScreen = new ActionHomeScreen();
     private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
+    private String nameOfCurrentTub = null;
+
 
     @Override
     public int detectedScreen(){
@@ -37,7 +52,14 @@ public class Home extends ScreenHelper {
 
     @Override
     public boolean isVisible() {
-        if (isExistHomeScreen()){
+        try {
+            nameOfCurrentTub = getWidestChild(Constant.Text.CLASS_NAME_TABS_BAR).getText();
+        }catch (NullPointerException e){
+
+        }
+
+        if (isExistMyHomeScreen() || isExistDiscovery() || isExistTemporaryScreen() || isExistQuickReadsScreen()
+                || isExistLibraryScreen()){
             return true;
         }else return false;
     }
@@ -45,15 +67,30 @@ public class Home extends ScreenHelper {
     public void start() {
 
         switch (detectedScreen()) {
-            case Constant.ScreenId.HOME_SCREEN:
-                randomActionHomeScreen();
+            case Constant.ScreenId.MY_HOME_SCREEN:
+                TestManager.log("\"My Home\" screen is detected");
+                randomActionMyHomeScreen();
                 break;
-            default:
-
+            case Constant.ScreenId.DISCOVERY_SCREEN:
+                TestManager.log("\"Discovery\" screen is detected");
+                randomActionDiscoveryScreen();
+                break;
+            case Constant.ScreenId.TEMPORARY_SCREEN:
+                TestManager.log("\"Temporary\" screen is detected");
+                randomActionTemporaryScreen();
+                break;
+            case Constant.ScreenId.QUICK_READS_SCREEN:
+                TestManager.log("\"Quck Reads\" screen is detected");
+                randomActionQuickReadsScreen();
+                break;
+            case Constant.ScreenId.LIBRARY_SCREEN:
+                TestManager.log("\"Library\" screen is detected");
+                randomActionLibraryScreen();
+                break;
         }
     }
 
-    private class ActionHomeScreen{
+    private class ActionHomeScreen {
 
         private void swipeRightLeft(){
             By idPager = By.id(Constant.Id.VIEW_PAGER);
@@ -78,20 +115,114 @@ public class Home extends ScreenHelper {
         }
     }
 
-    public boolean isExistHomeScreen(){
-        if(isWebElementPresent(By.id(Constant.Id.WELCOME_IMAGE))){
-            currentScreenId = Constant.ScreenId.HOME_SCREEN;
+    private class ActionMyHomeScreen{
+
+    }
+
+    private class ActionDiscoveryScreen{
+
+    }
+
+    private class ActionTemporaryScreen {
+
+    }
+
+    private class ActionQuckReadsScreen{
+
+    }
+
+    private class ActionLibraryScreen{
+
+    }
+
+    public boolean isExistMyHomeScreen(){
+        if(Constant.Text.HOME.equals(nameOfCurrentTub)){
+            currentScreenId = Constant.ScreenId.MY_HOME_SCREEN;
             return true;
         }else return false;
     }
 
-    public void randomActionHomeScreen(){
+    public boolean isExistDiscovery(){
+        if (Constant.Text.DISCOVERY_SCREEN.equals(nameOfCurrentTub)) {
+            currentScreenId = Constant.ScreenId.DISCOVERY_SCREEN;
+            return true;
+        }else return false;
+    }
+
+    public boolean isExistTemporaryScreen(){
+        if (Constant.Text.TEMPORARY_SCREEN.equals(nameOfCurrentTub)) {
+            currentScreenId = Constant.ScreenId.TEMPORARY_SCREEN;
+            return true;
+        }else return false;
+    }
+
+    public boolean isExistQuickReadsScreen(){
+        if(Constant.Text.QUICK_READS_SCREEN.equals(nameOfCurrentTub)){
+            currentScreenId = Constant.ScreenId.QUICK_READS_SCREEN;
+            return true;
+        }else return false;
+    }
+
+    public boolean isExistLibraryScreen(){
+        if(Constant.Text.LIBRARY_SCREEN.equals(nameOfCurrentTub)){
+            currentScreenId = Constant.ScreenId.LIBRARY_SCREEN;
+           return true;
+        }else return false;
+    }
+
+
+    public void randomActionMyHomeScreen(){
         switch (setRandomNumber(2)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
             case 1:
                 actionHomeScreen.swipeUpDown();
+                break;
+        }
+    }
+
+    public void randomActionDiscoveryScreen(){
+        switch (setRandomNumber(2)){
+            case 0:
+                actionHomeScreen.swipeRightLeft();
+                break;
+            case 1:
+                actionHomeScreen.swipeUpDown();
+                break;
+        }
+    }
+
+    public void randomActionTemporaryScreen(){
+        switch (setRandomNumber(2)){
+            case 0:
+                actionHomeScreen.swipeRightLeft();
+                break;
+            case 1:
+                actionHomeScreen.swipeUpDown();
+                break;
+        }
+    }
+
+    public void randomActionQuickReadsScreen(){
+        switch (setRandomNumber(2)){
+            case 0:
+                actionHomeScreen.swipeRightLeft();
+                break;
+            case 1:
+                actionHomeScreen.swipeUpDown();
+                break;
+        }
+    }
+
+    public void randomActionLibraryScreen(){
+        switch (setRandomNumber(2)){
+            case 0:
+                actionHomeScreen.swipeRightLeft();
+                break;
+            case 1:
+                actionHomeScreen.swipeUpDown();
+                break;
         }
     }
 

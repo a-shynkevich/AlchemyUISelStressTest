@@ -2,10 +2,12 @@ package bn.nook.alchemy.screen;
 
 import bn.nook.alchemy.utils.TestManager;
 import net.bugs.testhelper.TestHelper;
+import net.bugs.testhelper.view.View;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.support.ui.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -174,5 +176,20 @@ public class ScreenHelper implements IScreenHelper {
             return null;
         }
         return element;
+    }
+
+    public View getWidestChild(String className){
+        View view = null;
+        int width = 0;
+
+        ArrayList<View> views = testHelper.getCurrentViewsByClass(className, true, false);
+        for (int i = 0; i<views.size();i++){
+            int viewWidth = views.get(i).getWidth();
+            if (viewWidth > width) {
+                width = viewWidth;
+                view = views.get(i);
+            }
+        }
+        return view;
     }
 }

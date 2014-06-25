@@ -9,6 +9,7 @@ import bn.nook.alchemy.utils.Constant;
 import bn.nook.alchemy.utils.ScreenDefinition;
 import bn.nook.alchemy.utils.TestManager;
 import net.bugs.testhelper.TestHelper;
+import net.bugs.testhelper.view.View;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -26,12 +27,15 @@ public class TestRunner {
 
         TestHelper th = TestManager.getInstance().getTestHelper();
         ScreenDefinition screenDefinition = new ScreenDefinition(TestManager.driver);
-        Oobe oobe = new Oobe(TestManager.driver);
-        Home home = new Home(TestManager.driver);
+//        Oobe oobe = new Oobe(TestManager.driver);
+//        Home home = new Home(TestManager.driver);
 //        oobe.signIn();
-//        sleep(2000);
+//        ScreenHelper screenHelper = new ScreenHelper(TestManager.driver);
+//        View test = screenHelper.getWidestChild("android.widget.TextView");
+//        System.out.println(test.getText());
+//        sleep(20000);
 //        while (true) {
-//            System.out.println(home.isExistHomeScreen());
+//            System.out.println(home.isExistMyHomeScreen());
 //        }
 //        sleep(500000);
         while(true){
@@ -50,6 +54,7 @@ public class TestRunner {
                 case Constant.EnumScreen.HOME_SCREEN:
                     TestManager.log("HOME_SCREEN");
                     (new  Home(TestManager.driver)).start();
+                    break;
 
                 case Constant.EnumScreen.UNKNOWN_SCREEN:
                     TestManager.log("UNKNOWN_SCREEN");

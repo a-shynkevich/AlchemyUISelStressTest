@@ -32,24 +32,20 @@ public class ScreenDefinition {
     }
 
     private boolean oobeDetected(){
-//        driver.switchTo().window("NATIVE_APP");
         Oobe oobe = new Oobe(driver);
         TestManager.log("Start oobe detected\n");
         return oobe.isVisible();
     }
 
     private boolean dialogDetected(){
-//        driver.switchTo().window("NATIVE_APP");
         Dialog dialogScreen = new Dialog(driver);
         TestManager.log("Start Dialog detected\n");
         return dialogScreen.isVisible();
     }
     public boolean homeDetected(){
-        driver.switchTo().window("WEBVIEW_0");
         Home home = new Home(driver);
         TestManager.log("Start Home detected\n");
         boolean result = home.isVisible();
-        driver.switchTo().window("NATIVE_APP");
         return result;
     }
 }
