@@ -8,10 +8,10 @@ import org.openqa.selenium.WebDriver;
  */
 public interface IScreenHelper {
     public void start();
-
-    int detectedScreen();
     //return current screen Id
+    int detectedScreen();
 
-    public void clickById(By elementId) throws InterruptedException;
-    //click on element by Id.
+    //return state of screen
+    public boolean isVisible();
+
 }

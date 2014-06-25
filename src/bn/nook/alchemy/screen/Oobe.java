@@ -167,6 +167,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("SWIPE");
             }
         }
+
         private void tapOnExplroeAppBtn(){
             By idExploreAppBtn = By.id(Constant.Id.EXPLORE_APP_BUTN);
             WebElement exploreAppBtn = waitForElement(idExploreAppBtn, driver , 60);
@@ -177,6 +178,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("Click on EXPLORE BUTTON");
             }
         }
+
         public void clickOnCountrySpinner(){
             By idCountrySpinner = By.id(Constant.Id.COUNTRY_SPINNER);
             WebElement countrySpinner = waitForElement(idCountrySpinner, driver, 60);
@@ -364,7 +366,7 @@ public class Oobe extends ScreenHelper {
                 actionOnLoginScreen.cliclCloseButton(); //the same element as on the Login screen
                 break;
             case 3:
-//                actionPasswScreen.clickSignUpBtn(); //the same element as on the Login screen
+                actionPasswScreen.clickSignUpBtn(); //the same element as on the Login screen
                 break;
             case 4:
                 actionPasswScreen.showPassword();

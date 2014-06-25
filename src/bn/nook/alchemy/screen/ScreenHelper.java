@@ -97,6 +97,11 @@ public class ScreenHelper implements IScreenHelper {
         return 0;
     }
 
+    @Override
+    public boolean isVisible() {
+        return false;
+    }
+
     public void clickById(By elementId)  {
         try {
             sleep(1000);
