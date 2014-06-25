@@ -4,11 +4,13 @@ import io.selendroid.SelendroidCapabilities;
 import io.selendroid.SelendroidConfiguration;
 import io.selendroid.SelendroidDriver;
 import io.selendroid.SelendroidLauncher;
+import io.selendroid.server.handler.CaptureScreenshot;
 import net.bugs.testhelper.TestHelper;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 
@@ -24,6 +26,7 @@ public class TestManager {
     private static String mPassword = null;
     private static String mPathToAPK = null;
     private static net.bugs.testhelper.helpers.PropertiesManager mPropertiesManager;
+    private static String outputDirName = "d:\\test\\";
 
     private static String pathToApp = TestManager.getInstance().getPathToAPK();
     private static SelendroidLauncher selendroidServer;
@@ -117,6 +120,18 @@ public class TestManager {
 
     public static int getRandomInt(int min, int max) {
         return (int) (Math.random() * (max - min + 1)) + min;
+    }
+
+    public static void takeScreenshot(){
+        CaptureScreenshot captureScreenshot = new CaptureScreenshot(outputDirName);
+        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(scrFile, new File("d:\\test\\"  + File.separator + "screenshot-" + System.currentTimeMillis() + ".png"));
+            TestManager.log("MAKE SCREEN");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

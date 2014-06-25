@@ -10,8 +10,14 @@ import bn.nook.alchemy.utils.ScreenDefinition;
 import bn.nook.alchemy.utils.TestManager;
 import net.bugs.testhelper.TestHelper;
 import net.bugs.testhelper.view.View;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
+
+import java.io.File;
+import java.io.IOException;
 
 import static java.lang.Thread.dumpStack;
 import static java.lang.Thread.sleep;
@@ -27,6 +33,8 @@ public class TestRunner {
 
         TestHelper th = TestManager.getInstance().getTestHelper();
         ScreenDefinition screenDefinition = new ScreenDefinition(TestManager.driver);
+
+
 //        Oobe oobe = new Oobe(TestManager.driver);
 //        Home home = new Home(TestManager.driver);
 //        oobe.signIn();
@@ -63,6 +71,7 @@ public class TestRunner {
             }
 
             if(countUnknownScreen > 5){
+                TestManager.takeScreenshot();
                 System.out.println("BREAK");
                 break;
             }
