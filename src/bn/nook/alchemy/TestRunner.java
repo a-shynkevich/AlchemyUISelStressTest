@@ -1,26 +1,12 @@
 package bn.nook.alchemy;
 
-import android.webkit.WebViewFragment;
 import bn.nook.alchemy.screen.Dialog;
 import bn.nook.alchemy.screen.Home;
 import bn.nook.alchemy.screen.Oobe;
-import bn.nook.alchemy.screen.ScreenHelper;
 import bn.nook.alchemy.utils.Constant;
 import bn.nook.alchemy.utils.ScreenDefinition;
 import bn.nook.alchemy.utils.TestManager;
-import net.bugs.testhelper.TestHelper;
-import net.bugs.testhelper.view.View;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebElement;
 
-import java.io.File;
-import java.io.IOException;
-
-import static java.lang.Thread.dumpStack;
-import static java.lang.Thread.sleep;
 
 /**
  * Created by Alecs on 17.06.2014.
@@ -31,21 +17,8 @@ public class TestRunner {
     public static void runTest() throws InterruptedException {
         int countUnknownScreen = 0;
 
-        TestHelper th = TestManager.getInstance().getTestHelper();
         ScreenDefinition screenDefinition = new ScreenDefinition(TestManager.driver);
 
-
-//        Oobe oobe = new Oobe(TestManager.driver);
-//        Home home = new Home(TestManager.driver);
-//        oobe.signIn();
-//        ScreenHelper screenHelper = new ScreenHelper(TestManager.driver);
-//        View test = screenHelper.getWidestChild("android.widget.TextView");
-//        System.out.println(test.getText());
-//        sleep(20000);
-//        while (true) {
-//            System.out.println(home.isExistMyHomeScreen());
-//        }
-//        sleep(500000);
         while(true){
 
             switch (screenDefinition.detectedScreen()){
@@ -80,7 +53,7 @@ public class TestRunner {
     public static void main(String[] args) throws InterruptedException {
         TestManager.startServer();
         runTest();
-        TestManager.stopServer();
+//        TestManager.stopServer();
     }
 
 }

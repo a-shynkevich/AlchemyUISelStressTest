@@ -7,11 +7,14 @@ public class Constant {
     public static class Path{
         public static final String CONFIGURATION_FILE_PATH = "config.properties";
     }
+
     public static class Config{
         public static final String PATH_TO_APK = "APK";
         public static final String LOGIN_PROPERTY = "LOGIN";
         public static final String PASSWORD_PROPERTY = "PASSWORD";
+        public static final String REPORT_FOLDER_PROPERTY = "REPORT_FOLDER";
     }
+
     public static class EnumScreen{
         public static final int UNKNOWN_SCREEN = -1;
         public static final int OOBE_SCREEN = 0;

@@ -9,8 +9,9 @@ import net.bugs.testhelper.TestHelper;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 
@@ -25,24 +26,17 @@ public class TestManager {
     private static String mLogin = null;
     private static String mPassword = null;
     private static String mPathToAPK = null;
+    private static String mPathToRootFolder = null;
     private static net.bugs.testhelper.helpers.PropertiesManager mPropertiesManager;
-    private static String outputDirName = "d:\\test\\";
 
-    private static String pathToApp = TestManager.getInstance().getPathToAPK();
-    private static SelendroidLauncher selendroidServer;
+    private static String timeLog = new SimpleDateFormat("d.MM.YYYY_HH:MM:s_").format(Calendar.getInstance().getTime());
+
+    private static long rowNumber = 0;
+
     private static String appID = "bn.ereader:4.0.0.158";
     public static WebDriver driver = null;
 
     public static void startServer(){
-//        if (selendroidServer != null){
-//            selendroidServer.stopSelendroid();
-//        }
-//
-//        SelendroidConfiguration config = new SelendroidConfiguration();
-//        config.addSupportedApp(pathToApp);
-//        selendroidServer = new SelendroidLauncher(config);
-//        selendroidServer.launchSelendroid();
-
         SelendroidCapabilities cap = new SelendroidCapabilities(appID);
         try {
             driver = new SelendroidDriver(cap);
@@ -57,7 +51,20 @@ public class TestManager {
         }
     }
 
-    public static void log(String message){
+    public static void log(Object message){
+        String fileName = mTestHelper.getHwDevice() +" (" + mTestHelper.getOsDevice() + ").txt";
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(new BufferedWriter(new FileWriter(TestManager.getInstance().getPathToReportFolder() + fileName, true)));
+            out.println(++rowNumber + ". " + timeLog + message);
+        }catch (IOException e) {
+            System.err.println(e);
+        }finally {
+            if (out != null) {
+                out.close();
+            }
+        }
+
         System.out.println(message);
     }
 
@@ -77,11 +84,11 @@ public class TestManager {
         }
         return instanceTestManager;
     }
-//
+
     public static TestManager getInstance(){
         return getInstance(mDeviceId);
     }
-//
+
     public void runIntent(String intent){
         mTestHelper.executeShellCommand(" am start -n " + intent, mTestHelper.defaultCallBack);
     }
@@ -123,15 +130,12 @@ public class TestManager {
     }
 
     public static void takeScreenshot(){
-        CaptureScreenshot captureScreenshot = new CaptureScreenshot(outputDirName);
-        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(scrFile, new File("d:\\test\\"  + File.separator + "screenshot-" + System.currentTimeMillis() + ".png"));
-            TestManager.log("MAKE SCREEN");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mTestHelper.takeScreenshot("screenshot-"+".png");
+    }
+        public String getPathToReportFolder(){
+        if(mPathToRootFolder == null)
+            mPathToRootFolder = mPropertiesManager.getProperty(Constant.Config.REPORT_FOLDER_PROPERTY);
+        return mPathToRootFolder;
     }
 
 }
