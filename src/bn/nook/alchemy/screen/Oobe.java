@@ -38,8 +38,8 @@ public class Oobe extends ScreenHelper {
         }
 
         public  static class Account{
-            public static final String EMAIL_ADDRESS = "avatar_unified_small2@books.com";
-            public static final String PASSWORD = "access";
+            public static final String EMAIL_ADDRESS = TestManager.getInstance().getLogin();
+            public static final String PASSWORD = TestManager.getInstance().getPassword();
         }
 
         public static class ScreenId {
