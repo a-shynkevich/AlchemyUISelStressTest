@@ -1,6 +1,7 @@
 package bn.nook.alchemy.screen;
 
 import bn.nook.alchemy.utils.TestManager;
+import net.bugs.testhelper.view.View;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,9 +10,11 @@ import org.openqa.selenium.WebElement;
  * Created by Alecs on 25.06.2014.
  */
 public class Home extends ScreenHelper {
+    private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
+    ActionHomeScreen actionHomeScreen = new ActionHomeScreen();
+    private String nameOfCurrentTub = null;
 
     public static class Constant{
-
         public static class ScreenId{
             public static final int UNKNOWN_SCREEN = -1;
             public static final int MY_HOME_SCREEN = 0;
@@ -38,12 +41,8 @@ public class Home extends ScreenHelper {
 
     public Home(WebDriver driver) {
         super(driver);
+
     }
-
-    ActionHomeScreen actionHomeScreen = new ActionHomeScreen();
-    private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
-    private String nameOfCurrentTub = null;
-
 
     @Override
     public int detectedScreen(){
@@ -52,20 +51,24 @@ public class Home extends ScreenHelper {
 
     @Override
     public boolean isVisible() {
-        try {
-            nameOfCurrentTub = getWidestChild(Constant.Text.CLASS_NAME_TABS_BAR).getText();
-        }catch (NullPointerException e){
+        View view =  getWidestChild(Constant.Text.CLASS_NAME_TABS_BAR);
+        if(view == null)
+            return false;
 
+        nameOfCurrentTub = view.getText();
+
+        if (isExistMyHomeScreen() ||
+                isExistDiscovery() ||
+                isExistTemporaryScreen() ||
+                isExistQuickReadsScreen() ||
+                isExistLibraryScreen()){
+            return true;
         }
 
-        if (isExistMyHomeScreen() || isExistDiscovery() || isExistTemporaryScreen() || isExistQuickReadsScreen()
-                || isExistLibraryScreen()){
-            return true;
-        }else return false;
+        return false;
     }
 
     public void start() {
-
         switch (detectedScreen()) {
             case Constant.ScreenId.MY_HOME_SCREEN:
                 TestManager.log("\"My Home\" screen is detected");
@@ -166,13 +169,13 @@ public class Home extends ScreenHelper {
     public boolean isExistLibraryScreen(){
         if(Constant.Text.LIBRARY_SCREEN.equals(nameOfCurrentTub)){
             currentScreenId = Constant.ScreenId.LIBRARY_SCREEN;
-           return true;
+            return true;
         }else return false;
     }
 
 
     public void randomActionMyHomeScreen(){
-        switch (setRandomNumber(2)){
+        switch (getRandomNumber(2)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
@@ -183,7 +186,7 @@ public class Home extends ScreenHelper {
     }
 
     public void randomActionDiscoveryScreen(){
-        switch (setRandomNumber(2)){
+        switch (getRandomNumber(2)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
@@ -194,7 +197,7 @@ public class Home extends ScreenHelper {
     }
 
     public void randomActionTemporaryScreen(){
-        switch (setRandomNumber(2)){
+        switch (getRandomNumber(2)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
@@ -205,7 +208,7 @@ public class Home extends ScreenHelper {
     }
 
     public void randomActionQuickReadsScreen(){
-        switch (setRandomNumber(2)){
+        switch (getRandomNumber(2)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
@@ -216,7 +219,7 @@ public class Home extends ScreenHelper {
     }
 
     public void randomActionLibraryScreen(){
-        switch (setRandomNumber(2)){
+        switch (getRandomNumber(2)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;

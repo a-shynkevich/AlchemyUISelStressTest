@@ -18,7 +18,6 @@ public class Dialog extends ScreenHelper {
             public static final int SELECT_COUNTRY_ERROR_DIALOG = 2;
         }
 
-
         public static class Text{
             public static final String TRY_AGAIN_BUTTON = "Try again";
             public static final String NO_INTERNET_TITLE = "Let's get connected";

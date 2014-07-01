@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
 import static java.lang.Thread.sleep;
 
@@ -124,7 +124,9 @@ public class ScreenHelper implements IScreenHelper {
         }
     }
 
-    public int setRandomNumber(int maxNumber){
+    public int getRandomNumber(int maxNumber){
+//        Random random = new Random();
+//        return random.nextInt(maxNumber);
         return (int) (Math.random() * maxNumber);
     }
 

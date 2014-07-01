@@ -1,19 +1,14 @@
 package bn.nook.alchemy.utils;
 
 import io.selendroid.SelendroidCapabilities;
-import io.selendroid.SelendroidConfiguration;
 import io.selendroid.SelendroidDriver;
-import io.selendroid.SelendroidLauncher;
-import io.selendroid.server.handler.CaptureScreenshot;
 import net.bugs.testhelper.TestHelper;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
-
 
 /**
  * Created by nikolai on 06.06.14.
@@ -31,6 +26,8 @@ public class TestManager {
     private static long rowNumber = 0;
     public static WebDriver driver = null;
     private static String mAppID = null;
+    private static String mDeviceHW = null;
+    private static String mDeviceOS = null;
 
     public static void startServer(){
         getAppID();
@@ -49,7 +46,7 @@ public class TestManager {
     }
 
     public static void log(Object message){
-        String fileName = mTestHelper.getHwDevice() +" (" + mTestHelper.getOsDevice() + ").txt";
+        String fileName = mDeviceHW +" (" + mDeviceOS + ").txt";
         PrintWriter out = null;
         try {
             out = new PrintWriter(new BufferedWriter(new FileWriter(getPathToReportFolder() + fileName, true)));
@@ -67,6 +64,8 @@ public class TestManager {
 
     private TestManager(String deviceId){
         mTestHelper = new TestHelper(deviceId);
+        mDeviceHW = mTestHelper.getHwDevice();
+        mDeviceOS = mTestHelper.getOsDevice();
         mPropertiesManager = mTestHelper.propertiesManager;
         readProperties();
     }

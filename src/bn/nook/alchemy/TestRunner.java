@@ -14,44 +14,39 @@ import bn.nook.alchemy.utils.TestManager;
 public class TestRunner {
     private static TestManager testManager;
 
-    public static void runTest() throws InterruptedException {
+    public static void runTest() {
         int countUnknownScreen = 0;
-
         ScreenDefinition screenDefinition = new ScreenDefinition(TestManager.driver);
 
         while(true){
-
             switch (screenDefinition.detectedScreen()){
                 case Constant.EnumScreen.OOBE_SCREEN:
                     TestManager.log("OOBE_SCREEN");
                     (new Oobe(TestManager.driver)).start();
                     break;
-
                 case Constant.EnumScreen.DIALOG_SCREEN:
                     TestManager.log("DIALOG_SCREEN");
                     (new Dialog(TestManager.driver)).start();
                     break;
-
                 case Constant.EnumScreen.HOME_SCREEN:
                     TestManager.log("HOME_SCREEN");
                     (new  Home(TestManager.driver)).start();
                     break;
-
                 case Constant.EnumScreen.UNKNOWN_SCREEN:
                     TestManager.log("UNKNOWN_SCREEN");
                     countUnknownScreen++;
                     break;
             }
-
             if(countUnknownScreen > 5){
-                TestManager.takeScreenshot();
+                testManager.takeScreenshot();
                 System.out.println("BREAK");
                 break;
             }
         }
     }
-    public static void main(String[] args) throws InterruptedException {
-        testManager = TestManager.getInstance();
+
+    public static void main(String[] args) {
+        testManager = TestManager.getInstance(); // todo
         TestManager.startServer();
         runTest();
 //        TestManager.stopServer();

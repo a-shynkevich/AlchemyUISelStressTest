@@ -307,7 +307,7 @@ public class Oobe extends ScreenHelper {
 
     public void randomActionMainScreen(){
 
-        switch (setRandomNumber(4)){
+        switch (getRandomNumber(4)){
             case 0: {
                 actionOnMainScreen.signIn();
                 break;
@@ -326,7 +326,7 @@ public class Oobe extends ScreenHelper {
     }
 
     public void randomActionMainCountryList(){
-        switch (setRandomNumber(2)){
+        switch (getRandomNumber(2)){
             case 0:
                 actionOnMainWithCountryList.chooseUK();
                 break;
@@ -337,7 +337,7 @@ public class Oobe extends ScreenHelper {
     }
 
     public void randomActionLoginScreen(){
-        switch (setRandomNumber(5)){
+        switch (getRandomNumber(5)){
             case 0:
                 actionOnLoginScreen.clickBackButton();
 
@@ -359,7 +359,7 @@ public class Oobe extends ScreenHelper {
     }
 
     public void randomActionPasswordField(){
-        switch (setRandomNumber(6)){
+        switch (getRandomNumber(6)){
             case 0:
                 actionPasswScreen.enterPassword();
                 break;
