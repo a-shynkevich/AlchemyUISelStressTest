@@ -12,7 +12,7 @@ import bn.nook.alchemy.utils.TestManager;
  * Created by Alecs on 17.06.2014.
  */
 public class TestRunner {
-
+    private static TestManager testManager;
 
     public static void runTest() throws InterruptedException {
         int countUnknownScreen = 0;
@@ -51,6 +51,7 @@ public class TestRunner {
         }
     }
     public static void main(String[] args) throws InterruptedException {
+        testManager = TestManager.getInstance();
         TestManager.startServer();
         runTest();
 //        TestManager.stopServer();

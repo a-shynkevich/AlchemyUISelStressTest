@@ -9,8 +9,9 @@ public class Constant {
     }
 
     public static class Config{
-        public static final String PATH_TO_APK = "APK";
+//        public static final String PATH_TO_APK = "APK";
         public static final String LOGIN_PROPERTY = "LOGIN";
+        public static final String APP_ID_PROPERTY = "APP_ID";
         public static final String PASSWORD_PROPERTY = "PASSWORD";
         public static final String REPORT_FOLDER_PROPERTY = "REPORT_FOLDER";
     }

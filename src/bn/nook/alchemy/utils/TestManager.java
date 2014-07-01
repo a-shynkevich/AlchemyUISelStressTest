@@ -25,19 +25,16 @@ public class TestManager {
     private static String mDeviceId = null;
     private static String mLogin = null;
     private static String mPassword = null;
-    private static String mPathToAPK = null;
     private static String mPathToRootFolder = null;
     private static net.bugs.testhelper.helpers.PropertiesManager mPropertiesManager;
-
     private static String timeLog = new SimpleDateFormat("d.MM.YYYY_HH:MM:s_").format(Calendar.getInstance().getTime());
-
     private static long rowNumber = 0;
-
-    private static String appID = "bn.ereader:4.0.0.158";
     public static WebDriver driver = null;
+    private static String mAppID = null;
 
     public static void startServer(){
-        SelendroidCapabilities cap = new SelendroidCapabilities(appID);
+        getAppID();
+        SelendroidCapabilities cap = new SelendroidCapabilities(mAppID);
         try {
             driver = new SelendroidDriver(cap);
         } catch (Exception e) {
@@ -55,7 +52,7 @@ public class TestManager {
         String fileName = mTestHelper.getHwDevice() +" (" + mTestHelper.getOsDevice() + ").txt";
         PrintWriter out = null;
         try {
-            out = new PrintWriter(new BufferedWriter(new FileWriter(TestManager.getInstance().getPathToReportFolder() + fileName, true)));
+            out = new PrintWriter(new BufferedWriter(new FileWriter(getPathToReportFolder() + fileName, true)));
             out.println(++rowNumber + ". " + timeLog + message);
         }catch (IOException e) {
             System.err.println(e);
@@ -108,6 +105,12 @@ public class TestManager {
         return Math.abs(random.nextInt()) % n;
     }
 
+    private static String getAppID(){
+        if(mAppID == null)
+            mAppID = mPropertiesManager.getProperty(Constant.Config.APP_ID_PROPERTY);
+        return mAppID;
+    }
+
     public String getLogin(){
         if(mLogin == null)
             mLogin = mPropertiesManager.getProperty(Constant.Config.LOGIN_PROPERTY);
@@ -119,20 +122,16 @@ public class TestManager {
             mPassword = mPropertiesManager.getProperty(Constant.Config.PASSWORD_PROPERTY);
         return mPassword;
     }
-    public String getPathToAPK(){
-        if (mPathToAPK == null)
-            mPathToAPK = mPropertiesManager.getProperty(Constant.Config.PATH_TO_APK);
-        return mPathToAPK;
-    }
 
     public static int getRandomInt(int min, int max) {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
     public static void takeScreenshot(){
-        mTestHelper.takeScreenshot("screenshot-"+".png");
+        mTestHelper.takeScreenshot("screenshot"+".png", getPathToReportFolder());
     }
-        public String getPathToReportFolder(){
+
+    public static String getPathToReportFolder(){
         if(mPathToRootFolder == null)
             mPathToRootFolder = mPropertiesManager.getProperty(Constant.Config.REPORT_FOLDER_PROPERTY);
         return mPathToRootFolder;
