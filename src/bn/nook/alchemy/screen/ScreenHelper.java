@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static java.lang.Thread.sleep;
 
@@ -21,7 +20,6 @@ public class ScreenHelper implements IScreenHelper {
     private static final int SWIPE_RIGHT = 0;
     private static final int SWIPE_DOWN = 1;
     private static final int SWIPE_UP = 2;
-
 
     protected WebDriver driver = null;
     protected TestHelper testHelper;

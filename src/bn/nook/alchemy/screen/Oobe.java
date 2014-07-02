@@ -13,17 +13,26 @@ import static java.lang.Thread.sleep;
  * Created by Alecs on 17.06.2014.
  */
 public class Oobe extends ScreenHelper {
+    private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
+    private ActionOnMainScreen actionOnMainScreen = null;
+    private ActionOnMainWithCountryList actionOnMainWithCountryList = null;
+    private ActionOnLoginScreen actionOnLoginScreen = null;
+    private ActionOnPasswordScreen actionPasswScreen = null;
 
 
     public Oobe(WebDriver driver) {
         super(driver);
+        actionOnMainScreen = new ActionOnMainScreen();
+        actionOnMainWithCountryList = new ActionOnMainWithCountryList();
+        actionOnLoginScreen = new ActionOnLoginScreen();
+        actionPasswScreen = new ActionOnPasswordScreen();
     }
 
     public static class Constant{
 
         public static class Id{
 
-            public static final String PACKAGE_PATH_FOR_TH_ID = "bn.ereader:id/";
+            public static final String PACKAGE_PATH_FOR_ID = "bn.ereader:id/";
             public static final String SIGN_IN_BUTTN = "sign_in";
             public static final String EMAIL_FIELD = "account";
             public static final String PSSWD_FIELD = "password";
@@ -57,16 +66,9 @@ public class Oobe extends ScreenHelper {
         }
     }
 
-    private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
 
-    private ActionOnMainScreen actionOnMainScreen = new ActionOnMainScreen();
-    private ActionOnMainWithCountryList actionOnMainWithCountryList = new ActionOnMainWithCountryList();
-    private ActionOnLoginScreen actionOnLoginScreen = new ActionOnLoginScreen();
-
-    private ActionOnPasswordScreen actionPasswScreen = new ActionOnPasswordScreen();
 
     public void start(){
-
         switch (detectedScreen()){
             case Constant.ScreenId.MAIN_SCREEN:
                 TestManager.log("Oobe screen is main screen.");
@@ -94,21 +96,16 @@ public class Oobe extends ScreenHelper {
     }
 
     public boolean isVisible() {
-        if(isExistMainScreen() || isExistLoginScreen() || isExistMainScreenWithCountryList() ||
+        if(isExistMainScreen() ||
+                isExistLoginScreen() ||
+                isExistMainScreenWithCountryList() ||
                 isExistPasswordScreen())
             return true;
         return false;
     }
 
     private boolean isExistMainScreen(){
-//        By exploreAppBtn = By.id(Constant.Id.EXPLORE_APP_BUTN);
-//
-//        if(isElementPresent(exploreAppBtn)){
-//            currentScreenId = Constant.ScreenId.MAIN_SCREEN;
-//            return true;
-//        }
-//        return false;
-        if (testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_TH_ID + Constant.Id.EXPLORE_APP_BUTN, true, false).exists()){
+        if (testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_ID + Constant.Id.EXPLORE_APP_BUTN, true, false).exists()){
             currentScreenId = Constant.ScreenId.MAIN_SCREEN;
             return true;
         }else return false;
@@ -119,31 +116,28 @@ public class Oobe extends ScreenHelper {
             currentScreenId = Constant.ScreenId.MAIN_WITH_COUNTRY_LIST;
             return true;
         }else return false;
-
     }
 
     private boolean isExistLoginScreen(){
 
-        if ((testHelper.getViewById( Constant.Id.PACKAGE_PATH_FOR_TH_ID +Constant.Id.EMAIL_FIELD, true, false).exists()
-                && !testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_TH_ID +Constant.Id.PSSWD_FIELD, true, false).exists())
+        if ((testHelper.getViewById( Constant.Id.PACKAGE_PATH_FOR_ID +Constant.Id.EMAIL_FIELD, true, false).exists()
+                && !testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_ID +Constant.Id.PSSWD_FIELD, true, false).exists())
                 ||testHelper.getViewByText(Constant.Text.USE_SOCIAL_ACC, true, false).exists()){
             currentScreenId = Constant.ScreenId.LOGIN_SCREEN;
             return true;
-        }else return false;
+        }
+        return false;
     }
 
 
 
     private boolean isExistPasswordScreen(){
 
-        if (testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_TH_ID +Constant.Id.PSSWD_FIELD, true, false).exists()){
+        if (testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_ID +Constant.Id.PSSWD_FIELD, true, false).exists()){
             currentScreenId = Constant.ScreenId.PASSWORD_SCREEN;
             return true;
         }else return false;
-
     }
-
-
 
     private class ActionOnMainScreen{
 
@@ -190,8 +184,6 @@ public class Oobe extends ScreenHelper {
             }
         }
     }
-
-
 
     private class ActionOnMainWithCountryList{
 
@@ -265,8 +257,6 @@ public class Oobe extends ScreenHelper {
             }
         }
     }
-
-
 
     private class ActionOnPasswordScreen{
 

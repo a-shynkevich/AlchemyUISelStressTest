@@ -10,6 +10,14 @@ import org.openqa.selenium.WebElement;
  */
 public class Dialog extends ScreenHelper {
 
+    private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
+    private DialogScreen dialog = null;
+
+    public Dialog(WebDriver driver) {
+        super(driver);
+        dialog = new DialogScreen();
+    }
+
     public static class Constant{
         public static class ScreenId{
             public static final int UNKNOWN_SCREEN = -1;
@@ -25,14 +33,6 @@ public class Dialog extends ScreenHelper {
             public static final String SELECT_COUNTRY_TEXT = "Please select your country in order to proceed.";
         }
     }
-
-
-    public Dialog(WebDriver driver) {
-        super(driver);
-    }
-
-    private DialogScreen dialog = new DialogScreen();
-    private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
 
     public void start() {
         switch (detectedScreen()) {

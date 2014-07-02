@@ -3,6 +3,7 @@ package bn.nook.alchemy;
 import bn.nook.alchemy.screen.Dialog;
 import bn.nook.alchemy.screen.Home;
 import bn.nook.alchemy.screen.Oobe;
+import bn.nook.alchemy.screen.SideBar;
 import bn.nook.alchemy.utils.Constant;
 import bn.nook.alchemy.utils.ScreenDefinition;
 import bn.nook.alchemy.utils.TestManager;
@@ -19,6 +20,7 @@ public class TestRunner {
         ScreenDefinition screenDefinition = new ScreenDefinition(TestManager.driver);
 
         while(true){
+            TestManager.driver.switchTo().window(Constant.DriverSwitcher.NATIVE);
             switch (screenDefinition.detectedScreen()){
                 case Constant.EnumScreen.OOBE_SCREEN:
                     TestManager.log("OOBE_SCREEN");
@@ -31,6 +33,10 @@ public class TestRunner {
                 case Constant.EnumScreen.HOME_SCREEN:
                     TestManager.log("HOME_SCREEN");
                     (new  Home(TestManager.driver)).start();
+                    break;
+                case Constant.EnumScreen.SIDE_BAR:
+                    TestManager.log("SIDE_BAR SCREEN");
+                    (new SideBar(TestManager.driver)).start();
                     break;
                 case Constant.EnumScreen.UNKNOWN_SCREEN:
                     TestManager.log("UNKNOWN_SCREEN");
@@ -46,7 +52,7 @@ public class TestRunner {
     }
 
     public static void main(String[] args) {
-        testManager = TestManager.getInstance(); // todo
+        testManager = TestManager.getInstance();
         TestManager.startServer();
         runTest();
 //        TestManager.stopServer();

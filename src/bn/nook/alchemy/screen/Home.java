@@ -10,9 +10,15 @@ import org.openqa.selenium.WebElement;
  * Created by Alecs on 25.06.2014.
  */
 public class Home extends ScreenHelper {
+
     private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
-    ActionHomeScreen actionHomeScreen = new ActionHomeScreen();
+    ActionHomeScreen actionHomeScreen = null;
     private String nameOfCurrentTub = null;
+
+    public Home(WebDriver driver) {
+        super(driver);
+        actionHomeScreen = new ActionHomeScreen();
+    }
 
     public static class Constant{
         public static class ScreenId{
@@ -25,8 +31,8 @@ public class Home extends ScreenHelper {
         }
 
         public static class Id{
-            public static final String WELCOME_IMAGE = "fkljgslskdjewr456";
             public static final String VIEW_PAGER = "pager";
+            public static final String UP_BUTTON = "up";
         }
 
         public static class Text{
@@ -37,11 +43,6 @@ public class Home extends ScreenHelper {
             public static final String QUICK_READS_SCREEN = "Quick Reads";
             public static final String LIBRARY_SCREEN = "Library";
         }
-    }
-
-    public Home(WebDriver driver) {
-        super(driver);
-
     }
 
     @Override
@@ -116,6 +117,17 @@ public class Home extends ScreenHelper {
                 TestManager.log("SWIPE");
             }
         }
+
+        private void openSideBar(){
+            By idSideBarButton = By.id(Constant.Id.UP_BUTTON);
+            WebElement sideBurButton = waitForElement(idSideBarButton, driver, 60);
+            if (sideBurButton == null){
+                TestManager.log("\"Side bar\" button was not found");
+            }else {
+                TestManager.log("Click on the \"Side bur\" button.");
+                sideBurButton.click();
+            }
+        }
     }
 
     private class ActionMyHomeScreen{
@@ -175,56 +187,71 @@ public class Home extends ScreenHelper {
 
 
     public void randomActionMyHomeScreen(){
-        switch (getRandomNumber(2)){
+        switch (getRandomNumber(3)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
             case 1:
                 actionHomeScreen.swipeUpDown();
+                break;
+            case 2:
+                actionHomeScreen.openSideBar();
                 break;
         }
     }
 
     public void randomActionDiscoveryScreen(){
-        switch (getRandomNumber(2)){
+        switch (getRandomNumber(3)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
             case 1:
                 actionHomeScreen.swipeUpDown();
+                break;
+            case 2:
+                actionHomeScreen.openSideBar();
                 break;
         }
     }
 
     public void randomActionTemporaryScreen(){
-        switch (getRandomNumber(2)){
+        switch (getRandomNumber(3)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
             case 1:
                 actionHomeScreen.swipeUpDown();
+                break;
+            case 2:
+                actionHomeScreen.openSideBar();
                 break;
         }
     }
 
     public void randomActionQuickReadsScreen(){
-        switch (getRandomNumber(2)){
+        switch (getRandomNumber(3)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
             case 1:
                 actionHomeScreen.swipeUpDown();
+                break;
+            case 2:
+                actionHomeScreen.openSideBar();
                 break;
         }
     }
 
     public void randomActionLibraryScreen(){
-        switch (getRandomNumber(2)){
+        switch (getRandomNumber(3)){
             case 0:
                 actionHomeScreen.swipeRightLeft();
                 break;
             case 1:
                 actionHomeScreen.swipeUpDown();
+                break;
+            case 2:
+                actionHomeScreen.openSideBar();
                 break;
         }
     }

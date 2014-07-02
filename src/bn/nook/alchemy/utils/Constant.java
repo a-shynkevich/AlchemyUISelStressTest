@@ -6,6 +6,7 @@ package bn.nook.alchemy.utils;
 public class Constant {
     public static class Path{
         public static final String CONFIGURATION_FILE_PATH = "config.properties";
+
     }
 
     public static class Config{
@@ -19,8 +20,12 @@ public class Constant {
     public static class EnumScreen{
         public static final int UNKNOWN_SCREEN = -1;
         public static final int OOBE_SCREEN = 0;
-        public static final int LIBRARY_SCREEN = 1;
-        public static final int DIALOG_SCREEN = 2;
-        public static final int HOME_SCREEN = 3;
+        public static final int DIALOG_SCREEN = 1;
+        public static final int HOME_SCREEN = 2;
+        public static final int SIDE_BAR = 3;
+    }
+    public static class DriverSwitcher{
+        public static final String NATIVE = "NATIVE_APP";
+        public static final String WEBVIEW = "WEBVIEW";
     }
 }

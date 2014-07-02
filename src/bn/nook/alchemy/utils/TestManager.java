@@ -10,9 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
 
-/**
- * Created by nikolai on 06.06.14.
- */
 public class TestManager {
 
     private static TestManager instanceTestManager = null;
@@ -22,7 +19,7 @@ public class TestManager {
     private static String mPassword = null;
     private static String mPathToRootFolder = null;
     private static net.bugs.testhelper.helpers.PropertiesManager mPropertiesManager;
-    private static String timeLog = new SimpleDateFormat("d.MM.YYYY_HH:MM:s_").format(Calendar.getInstance().getTime());
+    private static String timeLog = new SimpleDateFormat("d.MM.YYYY HH:MM:s ").format(Calendar.getInstance().getTime());
     private static long rowNumber = 0;
     public static WebDriver driver = null;
     private static String mAppID = null;
@@ -127,7 +124,7 @@ public class TestManager {
     }
 
     public static void takeScreenshot(){
-        mTestHelper.takeScreenshot("screenshot"+".png", getPathToReportFolder());
+        mTestHelper.takeScreenshot("screenshot"+".png");
     }
 
     public static String getPathToReportFolder(){
