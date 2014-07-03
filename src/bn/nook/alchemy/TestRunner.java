@@ -1,12 +1,11 @@
 package bn.nook.alchemy;
 
-import bn.nook.alchemy.screen.Dialog;
-import bn.nook.alchemy.screen.Home;
-import bn.nook.alchemy.screen.Oobe;
-import bn.nook.alchemy.screen.SideBar;
+import bn.nook.alchemy.screen.*;
 import bn.nook.alchemy.utils.Constant;
 import bn.nook.alchemy.utils.ScreenDefinition;
 import bn.nook.alchemy.utils.TestManager;
+
+import static java.lang.Thread.sleep;
 
 
 /**
@@ -16,6 +15,12 @@ public class TestRunner {
     private static TestManager testManager;
 
     public static void runTest() {
+//        try {
+//            sleep(60000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         int countUnknownScreen = 0;
         ScreenDefinition screenDefinition = new ScreenDefinition(TestManager.driver);
 
@@ -34,14 +39,19 @@ public class TestRunner {
                     TestManager.log("HOME_SCREEN");
                     (new  Home(TestManager.driver)).start();
                     break;
-                case Constant.EnumScreen.SIDE_BAR:
-                    TestManager.log("SIDE_BAR SCREEN");
+                case Constant.EnumScreen.SIDE_BAR_SCREEN:
+                    TestManager.log("SIDE_BAR_SCREEN");
                     (new SideBar(TestManager.driver)).start();
+                    break;
+                case Constant.EnumScreen.SETTINGS_SCREEN:
+                    TestManager.log("SETTINGS_SCREEN");
+                    (new Settings(TestManager.driver)).start();
                     break;
                 case Constant.EnumScreen.UNKNOWN_SCREEN:
                     TestManager.log("UNKNOWN_SCREEN");
                     countUnknownScreen++;
                     break;
+
             }
             if(countUnknownScreen > 5){
                 testManager.takeScreenshot();

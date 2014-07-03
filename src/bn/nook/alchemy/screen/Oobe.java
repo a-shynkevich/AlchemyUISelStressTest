@@ -18,6 +18,7 @@ public class Oobe extends ScreenHelper {
     private ActionOnMainWithCountryList actionOnMainWithCountryList = null;
     private ActionOnLoginScreen actionOnLoginScreen = null;
     private ActionOnPasswordScreen actionPasswScreen = null;
+    private ActionProgressBar actionProgressBar = null;
 
 
     public Oobe(WebDriver driver) {
@@ -26,6 +27,7 @@ public class Oobe extends ScreenHelper {
         actionOnMainWithCountryList = new ActionOnMainWithCountryList();
         actionOnLoginScreen = new ActionOnLoginScreen();
         actionPasswScreen = new ActionOnPasswordScreen();
+        actionProgressBar = new ActionProgressBar();
     }
 
     public static class Constant{
@@ -44,6 +46,11 @@ public class Oobe extends ScreenHelper {
             public static final String BACK_BTN = "back";
             public static final String CLOSE_BTN = "close";
             public static final String SHOW_PSSW_CHECK_BOX = "show_password";
+
+        }
+
+        public static class ClassName{
+            public static final String PROGRESS_BAR = "android.widget.ProgressBar";
         }
 
         public  static class Account{
@@ -57,6 +64,7 @@ public class Oobe extends ScreenHelper {
             public static final int MAIN_WITH_COUNTRY_LIST = 1;
             public static final int LOGIN_SCREEN = 2;
             public static final int PASSWORD_SCREEN = 3;
+            public static final int PROGRESS_BAR = 4;
         }
 
         public static class Text{
@@ -87,6 +95,10 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("Oobe screen is Password screen.");
                 randomActionPasswordField();
                 break;
+            case Constant.ScreenId.PROGRESS_BAR:
+                TestManager.log("Progress bar screen is detected.");
+                actionProgressBar.waitEndOfLoading();
+                break;
         }
     }
 
@@ -99,7 +111,8 @@ public class Oobe extends ScreenHelper {
         if(isExistMainScreen() ||
                 isExistLoginScreen() ||
                 isExistMainScreenWithCountryList() ||
-                isExistPasswordScreen())
+                isExistPasswordScreen()||
+                isExistProgressBarScreen())
             return true;
         return false;
     }
@@ -119,7 +132,6 @@ public class Oobe extends ScreenHelper {
     }
 
     private boolean isExistLoginScreen(){
-
         if ((testHelper.getViewById( Constant.Id.PACKAGE_PATH_FOR_ID +Constant.Id.EMAIL_FIELD, true, false).exists()
                 && !testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_ID +Constant.Id.PSSWD_FIELD, true, false).exists())
                 ||testHelper.getViewByText(Constant.Text.USE_SOCIAL_ACC, true, false).exists()){
@@ -132,11 +144,19 @@ public class Oobe extends ScreenHelper {
 
 
     private boolean isExistPasswordScreen(){
-
         if (testHelper.getViewById(Constant.Id.PACKAGE_PATH_FOR_ID +Constant.Id.PSSWD_FIELD, true, false).exists()){
             currentScreenId = Constant.ScreenId.PASSWORD_SCREEN;
             return true;
-        }else return false;
+        }
+        return false;
+    }
+
+    private boolean isExistProgressBarScreen(){
+        if (testHelper.getViewByClass(Constant.ClassName.PROGRESS_BAR, true, false).exists()){
+            currentScreenId = Constant.ScreenId.PROGRESS_BAR;
+            return true;
+        }
+        return false;
     }
 
     private class ActionOnMainScreen{
@@ -148,7 +168,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"LOG IN\" button was not found!");
             }else {
                 signBtn.click();
-                TestManager.log("SIGN IN click");
+                TestManager.log("Click on the \"Sign in\" button.");
             }
         }
         private void swipeImages(){
@@ -169,7 +189,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"Explore the app\" button was not found!");
             }else {
                 exploreAppBtn.click();
-                TestManager.log("Click on EXPLORE BUTTON");
+                TestManager.log("Click on the \"EXPLORE BUTTON\"");
             }
         }
 
@@ -180,7 +200,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("\"Country Spinner\" was not found!");
             }else {
                 countrySpinner.click();
-                TestManager.log("CLICK ON COUNTRY SPINNER");
+                TestManager.log("Click on the \"Country Spinner\"");
             }
         }
     }
@@ -191,10 +211,10 @@ public class Oobe extends ScreenHelper {
             By textUSA = By.linkText(Constant.Text.UNITED_STATES);
             WebElement USA = waitForElement(textUSA, driver, 60);
             if (USA == null) {
-                TestManager.log("\"United States\" was not found");
+                TestManager.log("\"United States\" was not found!");
             } else {
                 USA.click();
-                TestManager.log("CLICK UNITED STATES");
+                TestManager.log("Click on the \"United States\".");
             }
         }
 
@@ -202,10 +222,10 @@ public class Oobe extends ScreenHelper {
             By textUK = By.linkText(Constant.Text.UNITED_KINGDOM);
             WebElement UK = waitForElement(textUK, driver , 60);
             if(UK == null){
-                TestManager.log("\"United Kingdom\" was not found");
+                TestManager.log("\"United Kingdom\" was not found!");
             }else {
                 UK.click();
-                TestManager.log("CLICK UNITED KINGDOM");
+                TestManager.log("Click on the \"United Kingdom\".");
             }
         }
     }
@@ -216,11 +236,11 @@ public class Oobe extends ScreenHelper {
             By idEmail = By.id(Constant.Id.EMAIL_FIELD);
             WebElement email = waitForElement(idEmail, driver, 60);
             if (email == null){
-                TestManager.log("Email field was not found");
+                TestManager.log("Email field was not found!");
             }else {
                 email.clear();
                 email.sendKeys(Constant.Account.EMAIL_ADDRESS);
-                TestManager.log("ENTER EMAIL");
+                TestManager.log("Enter e-mail address.");
             }
         }
 
@@ -228,10 +248,10 @@ public class Oobe extends ScreenHelper {
             By idBackBtn = By.id(Constant.Id.BACK_BTN);
             WebElement back = waitForElement(idBackBtn, driver, 60);
             if (back == null){
-                TestManager.log("Back button was not found");
+                TestManager.log("Back button was not found!");
             }else {
                 back.click();
-                TestManager.log("CLICK BACK BUTTON");
+                TestManager.log("Click on the \"Back\" button.");
             }
         }
 
@@ -242,7 +262,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("Close button was not found");
             }else{
                 close.click();
-                TestManager.log("CLICK CLOSE BUTTON");
+                TestManager.log("Click on the \"Close Button\".");
             }
         }
 
@@ -253,7 +273,7 @@ public class Oobe extends ScreenHelper {
                 TestManager.log("Next button was not found");
             }else{
                 nextBtn.click();
-                TestManager.log("CLICK NEXT BUTTON");
+                TestManager.log("Click on the \"Next\" button.");
             }
         }
     }
@@ -268,7 +288,7 @@ public class Oobe extends ScreenHelper {
             }else {
                 passwordField.clear();
                 passwordField.sendKeys(Constant.Account.PASSWORD);
-                TestManager.log("ENTER PASSWORD");
+                TestManager.log("Enter password.");
             }
         }
 
@@ -276,10 +296,10 @@ public class Oobe extends ScreenHelper {
             By idCheckBox = By.id(Constant.Id.SHOW_PSSW_CHECK_BOX);
             WebElement checkBox = waitForElement(idCheckBox, driver, 60);
             if (checkBox == null){
-                TestManager.log("\"Show password\" checkbox was not found");
+                TestManager.log("\"Show password\" checkbox was not found!");
             }else{
                 checkBox.click();
-                TestManager.log("CLICK ON \"SHOW PASSWORD\" CHECK BOX.");
+                TestManager.log("Click on the \"Show password\" check box.");
             }
         }
 
@@ -287,11 +307,17 @@ public class Oobe extends ScreenHelper {
             By idSignUpBtn = By.id(Constant.Id.SIGN_UP_BUTTN);
             WebElement signUpBtn = waitForElement(idSignUpBtn, driver, 60);
             if (signUpBtn == null){
-                TestManager.log("\"Sign up\" button was not found");
+                TestManager.log("\"Sign up\" button was not found!");
             }else{
                 signUpBtn.click();
-                TestManager.log("CLICK ON \"SIGN UP\" BUTTON.");
+                TestManager.log("Click on the \"Sign Up\" button.");
             }
+        }
+    }
+
+    private class ActionProgressBar{
+        private void waitEndOfLoading(){
+        while(testHelper.waitForExistsByClass(Constant.ClassName.PROGRESS_BAR, 1000, true));
         }
     }
 
@@ -307,7 +333,7 @@ public class Oobe extends ScreenHelper {
                 break;
             case 2:
 //                actionOnMainScreen.tapOnExplroeAppBtn();
-                TestManager.log("Click on EXPLORE BUTTON");
+                TestManager.log("Click on the EXPLORE BUTTON");
                 break;
             case 3:
                 actionOnMainScreen.clickOnCountrySpinner();

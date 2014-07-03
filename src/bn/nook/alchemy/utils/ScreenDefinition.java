@@ -1,9 +1,6 @@
 package bn.nook.alchemy.utils;
 
-import bn.nook.alchemy.screen.Dialog;
-import bn.nook.alchemy.screen.Home;
-import bn.nook.alchemy.screen.Oobe;
-import bn.nook.alchemy.screen.SideBar;
+import bn.nook.alchemy.screen.*;
 import net.bugs.testhelper.TestHelper;
 import org.openqa.selenium.WebDriver;
 
@@ -26,9 +23,10 @@ public class ScreenDefinition {
             return Constant.EnumScreen.DIALOG_SCREEN;
         if (homeDetected())
             return Constant.EnumScreen.HOME_SCREEN;
-        if(sideBar())
-            return Constant.EnumScreen.SIDE_BAR;
-        TestManager.log("OOBE NOT DETECTED");
+        if (sideBarDetected())
+            return Constant.EnumScreen.SIDE_BAR_SCREEN;
+        if (settingsDetected())
+            return Constant.EnumScreen.SETTINGS_SCREEN;
         return Constant.EnumScreen.UNKNOWN_SCREEN;
     }
 
@@ -43,14 +41,22 @@ public class ScreenDefinition {
         TestManager.log("Start Dialog detected\n");
         return dialogScreen.isVisible();
     }
+
     public boolean homeDetected(){
         Home home = new Home(driver);
         TestManager.log("Start Home detected\n");
         return home.isVisible();
     }
-    private boolean sideBar(){
+
+    private boolean sideBarDetected(){
         SideBar sideBar = new SideBar(driver);
         TestManager.log("Start SideBar detected");
         return sideBar.isVisible();
+    }
+
+    private boolean settingsDetected(){
+        Settings settings = new Settings(driver);
+        TestManager.log("Start Settings detected");
+        return settings.isVisible();
     }
 }

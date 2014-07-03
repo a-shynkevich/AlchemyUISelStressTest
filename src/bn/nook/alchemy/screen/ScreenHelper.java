@@ -41,6 +41,20 @@ public class ScreenHelper implements IScreenHelper {
         }
         return null;
     }
+
+    protected WebElement waitForElement(final By by, WebDriver driver, long timeoutInSec, String text){
+        long startTime = System.currentTimeMillis();
+
+        while (System.currentTimeMillis()-startTime < timeoutInSec * 1000) {
+            List<WebElement> elements = driver.findElements(by);
+            for (WebElement element : elements) {
+                if (element.getText().equals(text))
+                    return element;
+            }
+        }
+        return null;
+    }
+
     protected boolean isWebElementPresent(By by){
         try {
             WebElement element = driver.findElement(by);

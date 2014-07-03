@@ -22,7 +22,8 @@ public class Constant {
         public static final int OOBE_SCREEN = 0;
         public static final int DIALOG_SCREEN = 1;
         public static final int HOME_SCREEN = 2;
-        public static final int SIDE_BAR = 3;
+        public static final int SIDE_BAR_SCREEN = 3;
+        public static final int SETTINGS_SCREEN =4;
     }
     public static class DriverSwitcher{
         public static final String NATIVE = "NATIVE_APP";

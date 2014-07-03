@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 /**
  * Created by Alecs on 02.07.2014.
  */
-public class SideBar extends ScreenHelper {
+public class SideBar extends ScreenHelper implements IScreenHelper {
     private static int currentScreenId = Constant.ScreenId.UNKNOWN_SCREEN;
     ActionSideBar actionSideBar = null;
 
@@ -25,6 +25,7 @@ public class SideBar extends ScreenHelper {
         public static class Id{
             public static final String PACKAGE_PATH_FOR_ID = "bn.ereader:id/";
             public static final String NAVIGATION_DRAWER = "navigation_drawer";
+            public static final String TEXTVEW_OF_TABS = "textview";
 
         }
         public static class Text{
@@ -37,11 +38,15 @@ public class SideBar extends ScreenHelper {
     }
 
     public void start(){
-        switch(getRandomNumber(2)){
+        switch(detectedScreen()){
             case Constant.ScreenId.SIDE_BAR:
                 rundomActionSideBar();
                 break;
         }
+    }
+
+    public int detectedScreen() {
+        return currentScreenId;
     }
 
     @Override
@@ -60,6 +65,7 @@ public class SideBar extends ScreenHelper {
     }
 
     private class ActionSideBar{
+        By textview = By.id(Constant.Id.TEXTVEW_OF_TABS);
 
         private void openSettingsScreen(){
             By textSettings = By.linkText(Constant.Text.SETTINGS);
@@ -73,8 +79,7 @@ public class SideBar extends ScreenHelper {
         }
 
         private void openMyHomeScreen(){
-            By textMyHome = By.linkText(Constant.Text.MY_HOME);
-            WebElement myHomeTab = waitForElement(textMyHome, driver, 60);
+            WebElement myHomeTab = waitForElement(textview, driver, 60, Constant.Text.MY_HOME);
             if(myHomeTab == null){
                 TestManager.log("\"My Home\" tab was not found.");
             }else {
@@ -84,8 +89,8 @@ public class SideBar extends ScreenHelper {
         }
 
         private void openDiscoveryScreen(){
-            By textDiscovery = By.linkText(Constant.Text.DISCOVERY);
-            WebElement discoveryTab = waitForElement(textDiscovery, driver, 60);
+
+            WebElement discoveryTab = waitForElement(textview, driver, 60,Constant.Text.DISCOVERY );
             if(discoveryTab == null){
                 TestManager.log("\"Discovery\" tab was not found.");
             }else {
@@ -95,8 +100,7 @@ public class SideBar extends ScreenHelper {
         }
 
         private void openQuickReadsScreen(){
-            By textQuickReads = By.linkText(Constant.Text.QUICK_READS);
-            WebElement quickReadsTab = waitForElement(textQuickReads, driver, 60);
+            WebElement quickReadsTab = waitForElement(textview, driver, 60,Constant.Text.QUICK_READS );
             if(quickReadsTab == null){
                 TestManager.log("\"Quick Reads\" tab was not found.");
             }else {
@@ -106,8 +110,7 @@ public class SideBar extends ScreenHelper {
         }
 
         private void openLibraryScreen(){
-            By textlibrary = By.linkText(Constant.Text.LIBRARY);
-            WebElement libraryTab = waitForElement(textlibrary, driver, 60);
+            WebElement libraryTab = waitForElement(textview, driver, 60, Constant.Text.LIBRARY);
             if(libraryTab == null){
                 TestManager.log("\"Library\" tab was not found.");
             }else {
@@ -120,8 +123,7 @@ public class SideBar extends ScreenHelper {
     public void rundomActionSideBar(){
         switch (getRandomNumber(5)){
             case 0:
-                TestManager.log("Open settings.");
-//                actionSideBar.openSettingsScreen();
+                actionSideBar.openSettingsScreen();
                 break;
             case 1:
                 actionSideBar.openMyHomeScreen();
