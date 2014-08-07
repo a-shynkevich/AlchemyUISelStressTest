@@ -24,10 +24,10 @@ public class Home extends ScreenHelper {
         public static class ScreenId{
             public static final int UNKNOWN_SCREEN = -1;
             public static final int MY_HOME_SCREEN = 0;
-            public static final int DISCOVERY_SCREEN = 1;
-            public static final int TEMPORARY_SCREEN = 2;
+            public static final int SHOP_SCREEN = 1;
+//            public static final int TEMPORARY_SCREEN = 2;
             public static final int QUICK_READS_SCREEN = 3;
-            public static final int LIBRARY_SCREEN = 4;
+//            public static final int LIBRARY_SCREEN = 4;
         }
 
         public static class Id{
@@ -37,11 +37,11 @@ public class Home extends ScreenHelper {
 
         public static class Text{
             public static final String HOME = "Home";
-            public static final String DISCOVERY_SCREEN = "Discovery";
+            public static final String SHOP = "Shop";
             public static final String CLASS_NAME_TABS_BAR = "android.widget.TextView";
-            public static final String TEMPORARY_SCREEN = "Temporary";
+//            public static final String TEMPORARY_SCREEN = "Temporary";
             public static final String QUICK_READS_SCREEN = "Quick Reads";
-            public static final String LIBRARY_SCREEN = "Library";
+//            public static final String LIBRARY_SCREEN = "Library";
         }
     }
 
@@ -54,15 +54,16 @@ public class Home extends ScreenHelper {
     public boolean isVisible() {
         View view =  getWidestChild(Constant.Text.CLASS_NAME_TABS_BAR);
         if(view == null)
-            return false;
+        return false;
 
         nameOfCurrentTub = view.getText();
 
         if (isExistMyHomeScreen() ||
                 isExistDiscovery() ||
-                isExistTemporaryScreen() ||
-                isExistQuickReadsScreen() ||
-                isExistLibraryScreen()){
+//                isExistTemporaryScreen() ||
+                isExistQuickReadsScreen()
+//                || isExistLibraryScreen()
+                ){
             return true;
         }
 
@@ -75,22 +76,22 @@ public class Home extends ScreenHelper {
                 TestManager.log("\"My Home\" screen is detected");
                 randomActionMyHomeScreen();
                 break;
-            case Constant.ScreenId.DISCOVERY_SCREEN:
+            case Constant.ScreenId.SHOP_SCREEN:
                 TestManager.log("\"Discovery\" screen is detected");
                 randomActionDiscoveryScreen();
                 break;
-            case Constant.ScreenId.TEMPORARY_SCREEN:
-                TestManager.log("\"Temporary\" screen is detected");
-                randomActionTemporaryScreen();
-                break;
+//            case Constant.ScreenId.TEMPORARY_SCREEN:
+//                TestManager.log("\"Temporary\" screen is detected");
+//                randomActionTemporaryScreen();
+//                break;
             case Constant.ScreenId.QUICK_READS_SCREEN:
                 TestManager.log("\"Quck Reads\" screen is detected");
                 randomActionQuickReadsScreen();
                 break;
-            case Constant.ScreenId.LIBRARY_SCREEN:
-                TestManager.log("\"Library\" screen is detected");
-                randomActionLibraryScreen();
-                break;
+//            case Constant.ScreenId.LIBRARY_SCREEN:
+//                TestManager.log("\"Library\" screen is detected");
+//                randomActionLibraryScreen();
+//                break;
         }
     }
 
@@ -158,18 +159,18 @@ public class Home extends ScreenHelper {
     }
 
     public boolean isExistDiscovery(){
-        if (Constant.Text.DISCOVERY_SCREEN.equals(nameOfCurrentTub)) {
-            currentScreenId = Constant.ScreenId.DISCOVERY_SCREEN;
+        if (Constant.Text.SHOP.equals(nameOfCurrentTub)) {
+            currentScreenId = Constant.ScreenId.SHOP_SCREEN;
             return true;
         }else return false;
     }
 
-    public boolean isExistTemporaryScreen(){
-        if (Constant.Text.TEMPORARY_SCREEN.equals(nameOfCurrentTub)) {
-            currentScreenId = Constant.ScreenId.TEMPORARY_SCREEN;
-            return true;
-        }else return false;
-    }
+//    public boolean isExistTemporaryScreen(){
+//        if (Constant.Text.TEMPORARY_SCREEN.equals(nameOfCurrentTub)) {
+//            currentScreenId = Constant.ScreenId.TEMPORARY_SCREEN;
+//            return true;
+//        }else return false;
+//    }
 
     public boolean isExistQuickReadsScreen(){
         if(Constant.Text.QUICK_READS_SCREEN.equals(nameOfCurrentTub)){
@@ -178,12 +179,12 @@ public class Home extends ScreenHelper {
         }else return false;
     }
 
-    public boolean isExistLibraryScreen(){
-        if(Constant.Text.LIBRARY_SCREEN.equals(nameOfCurrentTub)){
-            currentScreenId = Constant.ScreenId.LIBRARY_SCREEN;
-            return true;
-        }else return false;
-    }
+//    public boolean isExistLibraryScreen(){
+//        if(Constant.Text.LIBRARY_SCREEN.equals(nameOfCurrentTub)){
+//            currentScreenId = Constant.ScreenId.LIBRARY_SCREEN;
+//            return true;
+//        }else return false;
+//    }
 
 
     public void randomActionMyHomeScreen(){

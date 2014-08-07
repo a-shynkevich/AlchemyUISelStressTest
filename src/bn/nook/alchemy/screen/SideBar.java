@@ -30,7 +30,7 @@ public class SideBar extends ScreenHelper implements IScreenHelper {
         }
         public static class Text{
             public static final String MY_HOME = "My Home";
-            public static final String DISCOVERY = "Discovery";
+            public static final String SHOP = "Shop";
             public static final String QUICK_READS = "Quick Reads";
             public static final String LIBRARY = "Library";
             public static final String SETTINGS = "Settings";
@@ -90,7 +90,7 @@ public class SideBar extends ScreenHelper implements IScreenHelper {
 
         private void openDiscoveryScreen(){
 
-            WebElement discoveryTab = waitForElement(textview, driver, 60,Constant.Text.DISCOVERY );
+            WebElement discoveryTab = waitForElement(textview, driver, 60,Constant.Text.SHOP);
             if(discoveryTab == null){
                 TestManager.log("\"Discovery\" tab was not found.");
             }else {
